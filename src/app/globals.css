@@ -154,33 +154,6 @@
 }
 
 /*
- * Hero slideshow timing. The bar's own animation decides when a slide moves on,
- * so pausing the bar pauses the slideshow. The duration is pinned even under
- * reduced motion, which would otherwise end it at once and skip every slide;
- * those visitors only see it run if they press play.
- */
-@keyframes slide-progress {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-.slide-progress {
-  transform-origin: left;
-  animation: slide-progress var(--slide-duration, 6s) linear forwards;
-}
-.slide-progress[data-paused="true"] {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .slide-progress {
-    animation-duration: var(--slide-duration, 6s) !important;
-  }
-}
-
-/*
  * Hand-drawn brand icons (src/components/icons). Lines take the text colour;
  * the one accent is gold. Strokes keep a constant on-screen weight, and the
  * small size drops the detail lines so it stays legible.

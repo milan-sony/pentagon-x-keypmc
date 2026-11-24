@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { useRef, useState, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { ArchOutline } from "@/components/brand/arch";
 import { Odometer } from "@/components/motion/odometer";
 import { SplitText } from "@/components/motion/split-heading";
@@ -9,7 +9,7 @@ import { SectionLabel } from "@/components/ui/heading";
 import { PillButton } from "@/components/ui/pill-button";
 import { home } from "@/content/home";
 import { useIntroReady } from "@/lib/intro";
-import { NextSlideThumb, SlideControls, SlideStack, type Slide } from "./hero-slider";
+import { NextSlideThumb, SLIDE_SECONDS, SlideStack, type Slide } from "./hero-slider";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -46,13 +46,14 @@ export function Hero() {
   const reduceMotion = useReducedMotion() ?? false;
 
   const [index, setIndex] = useState(0);
-  // null until the visitor presses play or pause; until then reduced motion decides.
-  const [choice, setChoice] = useState<boolean | null>(null);
-  const [held, setHeld] = useState(false);
-  const playing = choice ?? !reduceMotion;
-  const paused = !playing || held || !ready;
-
   const go = (i: number) => setIndex((i + slides.length) % slides.length);
+
+  // Each slide stays up for SLIDE_SECONDS; choosing "Next" restarts the wait. Still for reduced motion.
+  useEffect(() => {
+    if (!ready || reduceMotion) return;
+    const timer = window.setTimeout(() => setIndex((i) => (i + 1) % slides.length), SLIDE_SECONDS * 1000);
+    return () => window.clearTimeout(timer);
+  }, [index, ready, reduceMotion, slides.length]);
 
   // Depth: layers drift by different amounts as the pointer moves (fine pointers only).
   const pointerX = useMotionValue(0);
@@ -93,7 +94,7 @@ export function Hero() {
         className="flex min-h-[100svh] flex-col"
       >
         <motion.div
-          aria-live={paused ? "polite" : "off"}
+          aria-live={reduceMotion ? "polite" : "off"}
           className="absolute inset-0 -z-20 overflow-hidden"
           style={reduceMotion ? undefined : { scale: exitScale }}
         >
@@ -122,7 +123,7 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          className="container-site flex flex-1 flex-col justify-end pt-36"
+          className="container-site flex flex-1 flex-col justify-end pt-36 pb-14 sm:pb-16 lg:pb-20"
           style={reduceMotion ? undefined : { y: exitY, opacity: exitOpacity }}
         >
           <Rise ready={ready} delay={0}>
@@ -169,29 +170,15 @@ export function Hero() {
           </div>
         </motion.div>
 
-        <Rise ready={ready} delay={1.3} className="container-site">
-          <div className="mt-8 flex items-center justify-between gap-6 border-t border-cream/15 pt-3 pb-4 sm:mt-10 sm:pb-6">
-            <SlideControls
-              slides={slides}
-              index={index}
-              paused={paused}
-              playing={playing}
-              onSelect={go}
-              onAdvance={() => go(index + 1)}
-              onTogglePlay={() => setChoice(!playing)}
-              onHold={setHeld}
-            />
-            <a
-              href="#about"
-              className="group hidden items-center gap-3 text-xs font-medium tracking-wide text-cream/70 transition-colors hover:text-cream lg:flex"
-            >
-              Scroll
-              <span aria-hidden="true" className="relative h-10 w-px overflow-hidden bg-cream/20">
-                <span className="scroll-cue absolute inset-x-0 top-0 h-1/3 bg-gold-400" />
-              </span>
-            </a>
-          </div>
-        </Rise>
+        <a
+          href="#about"
+          className="group absolute right-5 bottom-6 hidden items-center gap-3 text-xs font-medium tracking-wide text-cream/70 transition-colors hover:text-cream sm:right-8 lg:flex"
+        >
+          Scroll
+          <span aria-hidden="true" className="relative h-12 w-px overflow-hidden bg-cream/20">
+            <span className="scroll-cue absolute inset-x-0 top-0 h-1/3 bg-gold-400" />
+          </span>
+        </a>
       </div>
     </section>
   );

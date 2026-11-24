@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 
 const reduced = vi.hoisted(() => ({ value: false }));
 vi.mock("motion/react", async (importOriginal) => {
@@ -12,17 +12,19 @@ const { home } = await import("@/content/home");
 const { markIntroReady, resetIntroForTests } = await import("@/lib/intro");
 
 const [first, second, third] = home.hero.slides;
+const slide = (n: number, caption: string) => screen.getByRole("group", { name: `${n} of 3: ${caption}` });
+const wait = (ms: number) => act(() => vi.advanceTimersByTime(ms));
 
-beforeEach(() => markIntroReady());
+beforeEach(() => {
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+  markIntroReady();
+});
 
 afterEach(() => {
+  vi.useRealTimers();
   reduced.value = false;
   resetIntroForTests();
 });
-
-function activeSlideButton() {
-  return screen.getAllByRole("button", { name: /^Show slide/ }).find((b) => b.getAttribute("aria-current") === "true");
-}
 
 describe("Hero slideshow", () => {
   it("keeps the headline as the page's main heading", () => {
@@ -41,32 +43,34 @@ describe("Hero slideshow", () => {
     expect(carousel.querySelector(`[aria-label="2 of 3: ${second.caption}"]`)).toHaveAttribute("aria-hidden", "true");
   });
 
-  it("shows the slide a visitor picks", () => {
+  it("has no slide numbers or pause button", () => {
     render(<Hero />);
-    fireEvent.click(screen.getByRole("button", { name: `Show slide 03: ${third.caption}` }));
-    expect(activeSlideButton()).toHaveAccessibleName(`Show slide 03: ${third.caption}`);
-    expect(screen.getByRole("group", { name: `3 of 3: ${third.caption}` })).not.toHaveAttribute("aria-hidden");
+    expect(screen.queryByRole("button", { name: /Pause slideshow|Play slideshow|Show slide/ })).toBeNull();
   });
 
-  it("moves on when the active progress bar finishes", () => {
-    const { container } = render(<Hero />);
-    fireEvent.animationEnd(container.querySelector("[data-progress-active]")!);
-    expect(activeSlideButton()).toHaveAccessibleName(`Show slide 02: ${second.caption}`);
+  it("moves to the next slide after seven seconds", () => {
+    render(<Hero />);
+    wait(6900);
+    expect(slide(1, first.caption)).not.toHaveAttribute("aria-hidden");
+    wait(200);
+    expect(slide(2, second.caption)).not.toHaveAttribute("aria-hidden");
   });
 
-  it("can be paused and resumed", () => {
-    const { container } = render(<Hero />);
-    fireEvent.click(screen.getByRole("button", { name: "Pause slideshow" }));
-    expect(screen.getByRole("button", { name: "Play slideshow" })).toBeInTheDocument();
-    expect(container.querySelector("[data-progress-active]")).toHaveAttribute("data-paused", "true");
-    fireEvent.click(screen.getByRole("button", { name: "Play slideshow" }));
-    expect(container.querySelector("[data-progress-active]")).toHaveAttribute("data-paused", "false");
-  });
-
-  it("does not auto-advance for visitors who prefer reduced motion", () => {
+  it("stays on the first slide for visitors who prefer reduced motion", () => {
     reduced.value = true;
-    const { container } = render(<Hero />);
-    expect(screen.getByRole("button", { name: "Play slideshow" })).toBeInTheDocument();
-    expect(container.querySelector("[data-progress-active]")).toHaveAttribute("data-paused", "true");
+    render(<Hero />);
+    wait(20000);
+    expect(slide(1, first.caption)).not.toHaveAttribute("aria-hidden");
+  });
+
+  it("moves on from the Next preview and restarts the wait", () => {
+    render(<Hero />);
+    wait(5000);
+    fireEvent.click(screen.getByRole("button", { name: /^Next/ }));
+    expect(slide(2, second.caption)).not.toHaveAttribute("aria-hidden");
+    wait(5000);
+    expect(slide(2, second.caption)).not.toHaveAttribute("aria-hidden");
+    wait(2100);
+    expect(slide(3, third.caption)).not.toHaveAttribute("aria-hidden");
   });
 });
