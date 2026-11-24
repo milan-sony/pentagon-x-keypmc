@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Inter } from "next/font/google";
+import { Preloader } from "@/components/layout/preloader";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { home } from "@/content/home";
+import { introHeadScript } from "@/lib/intro-script";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
@@ -50,9 +52,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       dir="ltr"
       className={`${inter.variable} ${cormorant.variable} ${cinzel.variable}`}
+      // The head script may add the intro-skip attribute before hydration.
+      suppressHydrationWarning
     >
+      <head>
+        {/* Decides before first paint whether the preloader plays (see src/lib/intro.ts). */}
+        <script dangerouslySetInnerHTML={{ __html: introHeadScript }} />
+      </head>
       <body>
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <Preloader />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

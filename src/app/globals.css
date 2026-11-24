@@ -145,6 +145,20 @@
   }
 }
 
+/* Preloader: hidden before paint when skipped, and faded out by CSS alone if JavaScript never runs. */
+html[data-intro-skip] [data-preloader] {
+  display: none;
+}
+[data-preloader] {
+  animation: preloader-failsafe 0.6s ease 3.2s forwards;
+}
+@keyframes preloader-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

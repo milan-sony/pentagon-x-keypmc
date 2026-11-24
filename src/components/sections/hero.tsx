@@ -4,11 +4,12 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { ArrowDownRight } from "lucide-react";
 import { home } from "@/content/home";
+import { useIntroReady } from "@/lib/intro";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 /** Splits the headline into words that rise out of a mask, one after another. */
-function RisingTitle({ text }: { text: string }) {
+function RisingTitle({ text, ready }: { text: string; ready: boolean }) {
   const words = text.split(" ");
   return (
     <h1
@@ -20,7 +21,7 @@ function RisingTitle({ text }: { text: string }) {
           <motion.span
             className="inline-block"
             initial={{ y: "105%" }}
-            animate={{ y: 0 }}
+            animate={ready ? { y: 0 } : undefined}
             transition={{ duration: 0.9, ease, delay: 0.15 + i * 0.06 }}
           >
             {word}
@@ -36,13 +37,13 @@ function RisingTitle({ text }: { text: string }) {
  * The open-bottomed arch and keystone from the logo, drawn around the hero
  * photograph. A CSS border keeps the outline concentric with the image.
  */
-function PortalFrame() {
+function PortalFrame({ ready }: { ready: boolean }) {
   return (
     <motion.div
       aria-hidden="true"
       className="portal pointer-events-none absolute -inset-3 border border-b-0 border-gold-500 sm:-inset-4"
       initial={{ clipPath: "inset(0 0 100% 0)" }}
-      animate={{ clipPath: "inset(0 0 0% 0)" }}
+      animate={ready ? { clipPath: "inset(0 0 0% 0)" } : undefined}
       transition={{ duration: 1.4, ease, delay: 0.6 }}
     />
   );
@@ -51,6 +52,8 @@ function PortalFrame() {
 export function Hero() {
   const { hero, images } = home;
   const image = images[hero.image];
+  // Holds the entrance until the first-visit preloader starts to lift.
+  const ready = useIntroReady();
 
   return (
     <section aria-labelledby="hero-title" className="container-site pt-4 pb-16 sm:pt-6 lg:pb-24">
@@ -67,11 +70,11 @@ export function Hero() {
           />
 
           <div className="relative">
-            <RisingTitle text={hero.title} />
+            <RisingTitle text={hero.title} ready={ready} />
             <motion.p
               className="mt-6 max-w-xl text-lg leading-relaxed text-cream/75"
               initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={ready ? { opacity: 1, y: 0 } : undefined}
               transition={{ duration: 0.8, ease, delay: 0.75 }}
             >
               {hero.lead}
@@ -79,7 +82,7 @@ export function Hero() {
             <motion.div
               className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
               initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={ready ? { opacity: 1, y: 0 } : undefined}
               transition={{ duration: 0.8, ease, delay: 0.9 }}
             >
               <a
@@ -104,7 +107,7 @@ export function Hero() {
           <motion.dl
             className="relative mt-14 grid grid-cols-3 gap-4 border-t border-cream/15 pt-7"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={ready ? { opacity: 1 } : undefined}
             transition={{ duration: 1, delay: 1.1 }}
           >
             {hero.highlights.map((item) => (
@@ -118,17 +121,17 @@ export function Hero() {
 
         <div className="relative mx-auto w-full max-w-md px-3 pt-3 sm:px-4 sm:pt-4 lg:col-span-5 lg:max-w-none">
           <div className="relative h-full min-h-[24rem] sm:min-h-[32rem]">
-            <PortalFrame />
+            <PortalFrame ready={ready} />
             <motion.div
               className="portal relative h-full overflow-hidden"
               initial={{ clipPath: "inset(100% 0 0 0)" }}
-              animate={{ clipPath: "inset(0% 0 0 0)" }}
+              animate={ready ? { clipPath: "inset(0% 0 0 0)" } : undefined}
               transition={{ duration: 1.3, ease, delay: 0.2 }}
             >
               <motion.div
                 className="absolute inset-0"
                 initial={{ scale: 1.12 }}
-                animate={{ scale: 1 }}
+                animate={ready ? { scale: 1 } : undefined}
                 transition={{ duration: 1.8, ease, delay: 0.2 }}
               >
                 <Image
@@ -147,7 +150,7 @@ export function Hero() {
               aria-hidden="true"
               className="absolute -top-[1.35rem] left-1/2 h-5 w-6 -translate-x-1/2 bg-ivory px-1 text-gold-500 box-content sm:-top-[1.6rem]"
               initial={{ y: -16, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              animate={ready ? { y: 0, opacity: 1 } : undefined}
               transition={{ duration: 0.7, ease, delay: 1.4 }}
             >
               <path d="M0 0h24l-4 20H4z" fill="currentColor" />
