@@ -1,69 +1,80 @@
-"use client";
-
-import { motion } from "motion/react";
+import Image from "next/image";
 import { Reveal } from "@/components/motion/reveal";
+import { SectionLabel, TwoToneHeading } from "@/components/ui/heading";
 import { Icon } from "@/components/ui/icon";
-import { SectionHeading } from "@/components/ui/section-heading";
 import { home } from "@/content/home";
+import { cn } from "@/lib/utils";
 
-const ease = [0.22, 1, 0.36, 1] as const;
+/** Vertical offsets that stagger the cards on desktop, as in Antra's process row. */
+const stagger = ["lg:mt-0", "lg:mt-12", "lg:mt-24"];
 
 export function Approach() {
-  const { approach } = home;
+  const { approach, images } = home;
   return (
-    <section id="approach" aria-labelledby="approach-title" className="py-20 lg:py-28">
+    <section
+      id="approach"
+      aria-labelledby="approach-title"
+      className="relative isolate overflow-hidden bg-cream py-24 lg:py-32"
+    >
+      {/* Faint drafting grid, a nod to the drawings behind every project. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 [background-image:linear-gradient(rgb(46_26_15/0.045)_1px,transparent_1px),linear-gradient(90deg,rgb(46_26_15/0.045)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:linear-gradient(180deg,transparent,#000_20%,#000_80%,transparent)]"
+      />
+
       <div className="container-site">
-        <Reveal>
-          <SectionHeading id="approach-title" label={approach.label} title={approach.title} lead={approach.lead} />
+        <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <SectionLabel>{approach.label}</SectionLabel>
+            <TwoToneHeading id="approach-title" heading={approach.title} className="mt-6" />
+          </div>
+          <p className="max-w-md text-lg leading-relaxed text-brown-600 lg:col-span-4 lg:col-start-9">{approach.lead}</p>
         </Reveal>
 
         {/* The life cycle is a true sequence, so its stages are numbered. */}
-        <div className="relative mt-14 lg:mt-20">
-          <motion.span
-            aria-hidden="true"
-            className="absolute top-[1.15rem] right-0 left-0 hidden h-px origin-left bg-gold-500 lg:block"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 1.6, ease }}
-          />
-          <ol className="relative grid gap-0 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-6 lg:gap-x-6">
-            {approach.stages.map((stage, i) => (
-              <Reveal
-                as="li"
-                key={stage.title}
-                delay={0.15 + i * 0.08}
-                className="relative border-l border-gold-500/50 pb-9 pl-6 last:pb-0 sm:border-l-0 sm:pl-0 lg:pb-0"
-              >
-                <span className="absolute top-1.5 -left-[5px] size-[9px] rounded-full bg-gold-500 sm:hidden" aria-hidden="true" />
-                <span className="hidden size-[2.3rem] items-center justify-center rounded-full border border-gold-500 bg-ivory font-brand text-sm text-brown-950 lg:inline-flex">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="font-brand text-sm text-gold-700 lg:hidden">{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="mt-1 text-2xl font-medium text-brown-950 lg:mt-5">{stage.title}</h3>
-                <ul className="mt-3 space-y-1.5 text-[0.95rem] text-brown-600">
-                  {stage.activities.map((activity) => (
-                    <li key={activity}>{activity}</li>
-                  ))}
-                </ul>
+        <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3 lg:gap-6">
+          {approach.stages.map((stage, i) => {
+            const image = images[stage.image];
+            const number = String(i + 1).padStart(2, "0");
+            return (
+              <Reveal as="li" key={stage.title} delay={(i % 3) * 0.08} className={cn(stagger[i % 3])}>
+                <article className="relative h-full overflow-hidden rounded-3xl bg-white p-3.5 shadow-[0_1px_0_rgb(46_26_15/0.06)]">
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-2xl">
+                    <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" className="object-cover" />
+                  </div>
+                  <div className="relative px-3 pt-5 pb-4">
+                    <h3 className="text-[1.75rem] leading-tight font-medium text-brown-950">
+                      <span className="text-gold-700">{number}.</span> {stage.title}
+                    </h3>
+                    <ul className="mt-3 space-y-1 text-[0.95rem] text-brown-600">
+                      {stage.activities.map((activity) => (
+                        <li key={activity}>{activity}</li>
+                      ))}
+                    </ul>
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute right-2 bottom-0 font-brand text-[5.5rem] leading-none text-brown-950/[0.05] select-none"
+                    >
+                      {number}
+                    </span>
+                  </div>
+                </article>
               </Reveal>
-            ))}
-          </ol>
-        </div>
+            );
+          })}
+        </ol>
 
-        <Reveal className="mt-16 lg:mt-24">
+        <Reveal className="mt-16 lg:mt-32">
           <h3 className="font-sans text-sm font-medium text-brown-700">{approach.toolsTitle}</h3>
-          <ul className="mt-5 grid overflow-hidden rounded-[1.5rem] border border-brown-950/10 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-5 flex flex-wrap gap-2.5">
             {approach.tools.map((tool) => (
               <li
                 key={tool.title}
-                className="-mt-px -ml-px flex gap-4 border-t border-l border-brown-950/10 p-6 sm:p-7"
+                title={tool.description}
+                className="inline-flex items-center gap-2 rounded-full border border-brown-950/12 bg-white px-4 py-2.5 text-[0.95rem] text-brown-950"
               >
-                <Icon name={tool.icon} className="mt-0.5 size-5 shrink-0 text-gold-700" />
-                <div>
-                  <p className="font-medium text-brown-950">{tool.title}</p>
-                  <p className="mt-1 text-[0.95rem] leading-relaxed text-brown-600">{tool.description}</p>
-                </div>
+                <Icon name={tool.icon} className="size-4 text-gold-700" />
+                {tool.title}
               </li>
             ))}
           </ul>

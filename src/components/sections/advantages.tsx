@@ -1,40 +1,76 @@
-import { Reveal } from "@/components/motion/reveal";
-import { Icon } from "@/components/ui/icon";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { home } from "@/content/home";
+"use client";
 
+import Image from "next/image";
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
+import { Reveal } from "@/components/motion/reveal";
+import { SplitHeader } from "@/components/ui/heading";
+import { home } from "@/content/home";
+import { cn } from "@/lib/utils";
+
+/** Antra's "meet the team" list, used for KeyPMC's advantages: each row reveals its photo. */
 export function Advantages() {
-  const { advantages } = home;
+  const { advantages, images } = home;
+  const [active, setActive] = useState(0);
+  const preview = images[advantages.items[active].image];
+
   return (
-    <section id="why" aria-labelledby="why-title" className="mt-20 bg-brown-950 py-20 text-cream lg:mt-28 lg:py-28">
+    <section id="why" aria-labelledby="why-title" className="bg-white py-24 lg:py-32">
       <div className="container-site">
         <Reveal>
-          <SectionHeading id="why-title" tone="dark" label={advantages.label} title={advantages.title} />
+          <SplitHeader id="why-title" label={advantages.label} heading={advantages.title} />
         </Reveal>
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14">
-          <Reveal className="lg:col-span-4">
-            <article className="relative h-full overflow-hidden rounded-[1.75rem] border border-gold-500/40 p-8 sm:p-10">
-              <Icon name={advantages.featured.icon} className="size-7 text-gold-400" />
-              <p className="mt-8 font-brand text-7xl leading-none text-gold-400 sm:text-8xl">{advantages.featured.value}</p>
-              <h3 className="mt-4 text-3xl font-medium">{advantages.featured.title}</h3>
-              <p className="mt-4 leading-relaxed text-cream/75">{advantages.featured.description}</p>
-            </article>
-          </Reveal>
+        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-14">
+          <div className="hidden lg:col-span-5 lg:block">
+            <div className="sticky top-28 aspect-[4/5] overflow-hidden rounded-3xl bg-sand">
+              <AnimatePresence initial={false} mode="popLayout">
+                <motion.div
+                  key={preview.src}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Image src={preview.src} alt={preview.alt} fill sizes="38vw" className="object-cover" />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
 
-          <ul className="grid gap-x-10 sm:grid-cols-2 lg:col-span-8">
+          <ol className="border-t border-brown-950/10 lg:col-span-7">
             {advantages.items.map((item, i) => (
-              <Reveal as="li" key={item.title} delay={(i % 2) * 0.08}>
-                <div className="flex h-full gap-5 border-t border-cream/12 py-7">
-                  <Icon name={item.icon} className="mt-1 size-5 shrink-0 text-gold-400" />
-                  <div>
-                    <h3 className="text-2xl font-medium">{item.title}</h3>
-                    <p className="mt-2 leading-relaxed text-cream/70">{item.description}</p>
-                  </div>
+              <li
+                key={item.title}
+                onMouseEnter={() => setActive(i)}
+                className="grid grid-cols-[auto_1fr_auto] gap-x-4 border-b border-brown-950/10 py-6 sm:gap-x-6 lg:py-7"
+              >
+                <span className="w-7 pt-2 font-brand text-sm text-brown-500">{String(i + 1).padStart(2, "0")}</span>
+                <div className="grid gap-1.5 xl:grid-cols-[minmax(0,1fr)_minmax(0,15rem)] xl:items-baseline xl:gap-8">
+                  <h3
+                    className={cn(
+                      "text-[1.7rem] leading-tight font-medium transition-colors duration-300 sm:text-[2rem]",
+                      active === i ? "text-gold-700" : "text-brown-950",
+                    )}
+                  >
+                    {item.title}
+                  </h3>
+                  <p className="text-[0.95rem] leading-relaxed text-brown-600">{item.description}</p>
                 </div>
-              </Reveal>
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "mt-1 inline-flex size-10 items-center justify-center rounded-full transition-all duration-300",
+                    active === i ? "rotate-45 bg-brown-950 text-gold-400" : "text-brown-700",
+                  )}
+                >
+                  <ArrowUpRight className="size-4" />
+                </span>
+              </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </div>
     </section>
