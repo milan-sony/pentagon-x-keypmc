@@ -5,6 +5,7 @@ import {
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
+  useInView,
   useScroll,
   useSpring,
   useTransform,
@@ -59,15 +60,19 @@ export function Hero() {
   });
   const go = (i: number) => setShow((s) => ({ index: (i + slides.length) % slides.length, previous: s.index }));
 
-  // Each slide stays up for SLIDE_SECONDS; choosing "Next" restarts the wait. Still for reduced motion.
+  // Each slide stays up for SLIDE_SECONDS; choosing "Next" restarts the wait. Still for reduced
+  // motion, and paused while the hero is mostly scrolled away, where a slide opening from the
+  // arch shows only as a stray strip of photo.
+  const sectionRef = useRef<HTMLElement>(null);
+  const heroVisible = useInView(sectionRef, { amount: 0.5, initial: true });
   useEffect(() => {
-    if (!ready || reduceMotion) return;
+    if (!ready || reduceMotion || !heroVisible) return;
     const timer = window.setTimeout(
       () => setShow((s) => ({ index: (s.index + 1) % slides.length, previous: s.index })),
       SLIDE_SECONDS * 1000,
     );
     return () => window.clearTimeout(timer);
-  }, [index, ready, reduceMotion, slides.length]);
+  }, [index, ready, reduceMotion, heroVisible, slides.length]);
 
   // Depth: layers drift by different amounts as the pointer moves (fine pointers only).
   const pointerX = useMotionValue(0);
@@ -95,11 +100,15 @@ export function Hero() {
   };
 
   // Leaving: the photo keeps zooming while the copy lifts and fades.
-  const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const exitScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-  const exitY = useTransform(scrollYProgress, [0, 1], [0, -140]);
-  const exitOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  // The copy leaves only once it has been read: it holds until its bottom edge rises past
+  // 55% of the screen. Tying this to the hero's height instead faded it mid-read on phones,
+  // where the hero is taller than the screen.
+  const contentRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: contentExit } = useScroll({ target: contentRef, offset: ["end 55%", "end start"] });
+  const exitY = useTransform(contentExit, [0, 1], [0, -100]);
+  const exitOpacity = useTransform(contentExit, [0, 0.8], [1, 0]);
 
   return (
     <section
@@ -144,6 +153,7 @@ export function Hero() {
         ) : null}
 
         <motion.div
+          ref={contentRef}
           className="container-site flex flex-1 flex-col justify-end pt-36 pb-14 sm:pb-16 lg:pb-20"
           style={reduceMotion ? undefined : { y: exitY, opacity: exitOpacity }}
         >

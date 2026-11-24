@@ -89,4 +89,47 @@ describe("Hero slideshow", () => {
     expect(slide(2, second.caption)).toHaveAttribute("data-state", "entering");
     expect(carousel.querySelector(`[aria-label="1 of 3: ${first.caption}"]`)).toHaveAttribute("data-state", "previous");
   });
+
+  it("does not change slides while the hero is scrolled out of view", () => {
+    const observers: { callback: IntersectionObserverCallback; targets: Element[] }[] = [];
+    const original = globalThis.IntersectionObserver;
+    globalThis.IntersectionObserver = class {
+      targets: Element[] = [];
+      constructor(public callback: IntersectionObserverCallback) {
+        observers.push(this);
+      }
+      observe(el: Element) {
+        this.targets.push(el);
+      }
+      unobserve() {}
+      disconnect() {}
+      takeRecords() {
+        return [];
+      }
+    } as unknown as typeof IntersectionObserver;
+    const report = (isIntersecting: boolean) =>
+      act(() => {
+        for (const o of observers) {
+          const entries = o.targets.map((target) => ({
+            target,
+            isIntersecting,
+            intersectionRatio: isIntersecting ? 1 : 0,
+          }));
+          o.callback(entries as unknown as IntersectionObserverEntry[], o as unknown as IntersectionObserver);
+        }
+      });
+    try {
+      render(<Hero />);
+      // As in a browser: the hero is reported in view on load, then scrolled away.
+      report(true);
+      report(false);
+      wait(9000);
+      expect(slide(1, first.caption)).not.toHaveAttribute("aria-hidden");
+      report(true);
+      wait(7100);
+      expect(slide(2, second.caption)).not.toHaveAttribute("aria-hidden");
+    } finally {
+      globalThis.IntersectionObserver = original;
+    }
+  });
 });

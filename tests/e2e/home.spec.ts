@@ -154,4 +154,31 @@ test.describe("homepage", () => {
       .evaluateAll((paths) => paths.map((p) => parseFloat(getComputedStyle(p).strokeDashoffset) || 0));
     expect(offsets.every((o) => o === 0)).toBe(true);
   });
+
+  test("hero content stays fully visible while it is on screen", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByTestId("preloader")).toBeHidden({ timeout: 5_000 });
+    const card = page.locator("section").first().getByText("Projects in portfolio", { exact: true });
+    // Bring the card to the middle of the screen, as someone reading it would.
+    await page.evaluate(() => {
+      const el = [...document.querySelectorAll("p")].find((n) => n.textContent === "Projects in portfolio")!;
+      window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - window.innerHeight / 2);
+    });
+    // Poll rather than sleep: the entrance fade may still be finishing.
+    await expect
+      .poll(
+        () =>
+          card.evaluate((node) => {
+            let el: Element | null = node;
+            let product = 1;
+            while (el) {
+              product *= Number(getComputedStyle(el).opacity);
+              el = el.parentElement;
+            }
+            return product;
+          }),
+        { timeout: 5_000 },
+      )
+      .toBeGreaterThan(0.95);
+  });
 });
