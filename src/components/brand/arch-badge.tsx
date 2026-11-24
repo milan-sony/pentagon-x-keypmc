@@ -31,7 +31,7 @@ export function ArchBadge({ children, className }: { children: ReactNode; classN
         />
         <path d={ARCH.keystone} className="fill-gold-500" />
       </svg>
-      <span className="absolute inset-x-0 top-[36%] flex justify-center text-brown-700 transition-[transform,color] duration-500 ease-portal group-hover:-translate-y-1.5 group-hover:text-cream group-focus-visible:-translate-y-1.5 group-focus-visible:text-cream">
+      <span className="absolute inset-x-0 top-[31%] flex justify-center text-brown-700 transition-[transform,color] duration-500 ease-portal group-hover:-translate-y-1.5 group-hover:text-cream group-focus-visible:-translate-y-1.5 group-focus-visible:text-cream">
         {children}
       </span>
     </span>

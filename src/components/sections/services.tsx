@@ -118,7 +118,7 @@ export function Services() {
               </div>
               <div className="flex items-start gap-4 p-7">
                 <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-gold-500 text-brown-950">
-                  <BrandIcon name={services.specialist.icon} size="sm" className="size-5 [--icon-accent:var(--color-cream)]" />
+                  <BrandIcon name={services.specialist.icon} size="sm" className="size-6 [--icon-accent:var(--color-cream)]" />
                 </span>
                 <div>
                   <p className="text-sm font-medium text-gold-200">Specialist licensed service</p>

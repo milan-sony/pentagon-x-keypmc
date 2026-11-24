@@ -131,4 +131,28 @@ test.describe("homepage", () => {
     await page.locator("#about").scrollIntoViewIfNeeded();
     await expect(page.getByRole("link", { name: /Project Support Services/ })).toBeVisible();
   });
+
+  test("a division card's brand icon redraws when the card is focused", async ({ page }) => {
+    await page.goto("/#about");
+    const card = page.getByRole("link", { name: /Project Support Services/ });
+    await card.focus();
+    await page.waitForTimeout(150);
+    const offsets = await card
+      .locator("[data-stroke]")
+      .evaluateAll((paths) => paths.map((p) => parseFloat(getComputedStyle(p).strokeDashoffset)));
+    // Mid-way through the draw: at least one line is still partly hidden.
+    expect(offsets.some((o) => o > 0 && o < 1)).toBe(true);
+  });
+
+  test("brand icons are fully drawn with reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/#about");
+    const card = page.getByRole("link", { name: /Project Support Services/ });
+    await card.hover();
+    await page.waitForTimeout(300);
+    const offsets = await card
+      .locator("[data-stroke]")
+      .evaluateAll((paths) => paths.map((p) => parseFloat(getComputedStyle(p).strokeDashoffset) || 0));
+    expect(offsets.every((o) => o === 0)).toBe(true);
+  });
 });

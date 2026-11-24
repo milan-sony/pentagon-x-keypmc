@@ -51,7 +51,7 @@ export function DivisionCard({ division, image, number, href }: DivisionCardProp
 
       <div className="flex items-start justify-between gap-4">
         <ArchBadge>
-          <BrandIcon name={division.icon} animate className="size-8" />
+          <BrandIcon name={division.icon} animate className="size-10" />
         </ArchBadge>
         <span aria-hidden="true" className="relative grid size-12 place-items-center">
           <span className="font-brand text-5xl leading-none text-brown-950/[0.08] transition-[opacity,transform] duration-500 group-hover:-translate-y-3 group-hover:opacity-0 group-focus-visible:opacity-0">
