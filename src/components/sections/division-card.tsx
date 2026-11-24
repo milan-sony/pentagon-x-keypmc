@@ -4,10 +4,10 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import type { PointerEvent } from "react";
 import { ArchBadge } from "@/components/brand/arch-badge";
-import { Icon } from "@/components/ui/icon";
-import type { Feature, SiteImage } from "@/content/home";
+import { BrandIcon } from "@/components/icons/brand-icon";
+import type { IconFeature, SiteImage } from "@/content/home";
 
-type DivisionCardProps = { division: Feature; image: SiteImage; number: string; href: string };
+type DivisionCardProps = { division: IconFeature; image: SiteImage; number: string; href: string };
 
 /** Moves the card's gold spotlight to the pointer through CSS variables, without re-rendering. */
 function trackPointer(event: PointerEvent<HTMLElement>) {
@@ -51,7 +51,7 @@ export function DivisionCard({ division, image, number, href }: DivisionCardProp
 
       <div className="flex items-start justify-between gap-4">
         <ArchBadge>
-          <Icon name={division.icon} className="size-6" />
+          <BrandIcon name={division.icon} animate className="size-8" />
         </ArchBadge>
         <span aria-hidden="true" className="relative grid size-12 place-items-center">
           <span className="font-brand text-5xl leading-none text-brown-950/[0.08] transition-[opacity,transform] duration-500 group-hover:-translate-y-3 group-hover:opacity-0 group-focus-visible:opacity-0">

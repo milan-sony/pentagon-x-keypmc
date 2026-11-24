@@ -4,7 +4,7 @@ import { Odometer } from "@/components/motion/odometer";
 import { Parallax } from "@/components/motion/parallax";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { SectionLabel, TwoToneHeading } from "@/components/ui/heading";
-import { Icon } from "@/components/ui/icon";
+import { BrandIcon } from "@/components/icons/brand-icon";
 import { home } from "@/content/home";
 import { cn } from "@/lib/utils";
 
@@ -90,7 +90,7 @@ export function Approach() {
                 title={tool.description}
                 className="inline-flex items-center gap-2 rounded-full border border-brown-950/12 bg-white px-4 py-2.5 text-[0.95rem] text-brown-950"
               >
-                <Icon name={tool.icon} className="size-4 text-gold-700" />
+                <BrandIcon name={tool.icon} size="sm" className="size-[1.15rem] text-brown-700" />
                 {tool.title}
               </RevealItem>
             ))}

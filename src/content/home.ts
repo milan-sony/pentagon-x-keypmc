@@ -7,26 +7,18 @@
  * Portfolio counts are as at the October 2026 profile; confirm before go-live.
  */
 
+/** Icons drawn for the site (src/components/icons/glyphs.tsx); one per key. */
 export const iconKeys = [
-  "workflow",
-  "drafting-compass",
-  "hard-hat",
-  "coins",
-  "chart-gantt",
-  "stamp",
-  "drone",
-  "crown",
-  "user-check",
-  "landmark",
-  "building",
-  "chart-pie",
-  "shield-check",
-  "layers",
-  "database",
-  "folder-open",
   "clipboard-check",
   "cog",
+  "hard-hat",
   "package",
+  "chart-gantt",
+  "layers",
+  "chart-pie",
+  "database",
+  "drone",
+  "folder-open",
 ] as const;
 
 export type IconKey = (typeof iconKeys)[number];
@@ -52,7 +44,8 @@ export type ImageKey =
 
 export type SiteImage = { src: string; alt: string; width: number; height: number };
 
-export type Feature = { title: string; description: string; icon: IconKey };
+export type Feature = { title: string; description: string };
+export type IconFeature = Feature & { icon: IconKey };
 
 // Placeholder photography (Unsplash License, see public/images/CREDITS.md).
 // Replace with KeyPMC's own project photos when supplied.
@@ -225,7 +218,7 @@ export const home = {
         icon: "package",
         image: "contracts",
       },
-    ] satisfies (Feature & { image: ImageKey })[],
+    ] satisfies (IconFeature & { image: ImageKey })[],
   },
 
   band: {
@@ -252,37 +245,31 @@ export const home = {
       {
         title: "Project Management",
         description: "End-to-end planning, coordination and delivery on the client’s behalf.",
-        icon: "workflow",
         image: "planning" as ImageKey,
       },
       {
         title: "Design Management",
         description: "Design reviews, consultant coordination, value engineering and BIM integration.",
-        icon: "drafting-compass",
         image: "design" as ImageKey,
       },
       {
         title: "Construction Supervision",
         description: "Site inspection, quality assurance and progress monitoring across all disciplines.",
-        icon: "hard-hat",
         image: "supervision" as ImageKey,
       },
       {
         title: "Cost & Contracts Management",
         description: "Cost planning, procurement, contract administration and change control.",
-        icon: "coins",
         image: "contracts" as ImageKey,
       },
       {
         title: "Planning & Project Controls",
         description: "Scheduling, risk management, earned value and performance reporting.",
-        icon: "chart-gantt",
         image: "corniche" as ImageKey,
       },
       {
         title: "Authority Approvals & Compliance",
         description: "Permits, regulatory approvals, stakeholder coordination and statutory compliance.",
-        icon: "stamp",
         image: "palaceHall" as ImageKey,
       },
     ] satisfies (Feature & { image: ImageKey })[],
@@ -324,7 +311,7 @@ export const home = {
       { title: "ERP-integrated controls", description: "Cost, procurement and document control linked to group systems", icon: "database" },
       { title: "Drone surveys", description: "Licensed aerial survey for progress and as-built records", icon: "drone" },
       { title: "Document control", description: "Structured correspondence, submittal and RFI management", icon: "folder-open" },
-    ] satisfies Feature[],
+    ] satisfies IconFeature[],
   },
 
   portfolio: {
@@ -378,43 +365,36 @@ export const home = {
       {
         title: "100% Emirati company",
         description: "Wholly owned by United National Holding and led by UAE nationals.",
-        icon: "crown",
         image: "heroSkyline" as ImageKey,
       },
       {
         title: "Single point of accountability",
         description: "One team for management, design, supervision and cost, with no gaps between providers.",
-        icon: "user-check",
         image: "planning" as ImageKey,
       },
       {
         title: "Royal & government experience",
         description: "Sensitive, high-profile projects that demand discretion and protocol.",
-        icon: "landmark",
         image: "palaceDome" as ImageKey,
       },
       {
         title: "Group strength",
         description: "Access to the resources, systems and specialist companies of UNH.",
-        icon: "building",
         image: "corniche" as ImageKey,
       },
       {
         title: "Commercial discipline",
         description: "Rigorous cost planning, change control and contract administration.",
-        icon: "coins",
         image: "contracts" as ImageKey,
       },
       {
         title: "Data-driven controls",
         description: "Integrated planning and dashboards give clients real-time visibility.",
-        icon: "chart-pie",
         image: "design" as ImageKey,
       },
       {
         title: "Safety & quality first",
         description: "QHSE built into every phase, aligned with UAE authority requirements.",
-        icon: "shield-check",
         image: "supervision" as ImageKey,
       },
     ] satisfies (Feature & { image: ImageKey })[],

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { IconKey } from "@/content/home";
 
 /*
  * Key International's icon drawings, on a 48 × 48 grid with a 4-unit margin.
@@ -10,17 +11,8 @@ import type { ReactNode } from "react";
  * Styling lives in globals.css under `.brand-icon`.
  */
 
-export type GlyphKey =
-  | "clipboard-check"
-  | "cog"
-  | "hard-hat"
-  | "package"
-  | "chart-gantt"
-  | "layers"
-  | "chart-pie"
-  | "database"
-  | "drone"
-  | "folder-open";
+/** One drawing per icon key in the content file, so a missing drawing fails type-checking. */
+export type GlyphKey = IconKey;
 
 function Line({ d }: { d: string }) {
   return <path data-stroke="" pathLength={1} d={d} />;

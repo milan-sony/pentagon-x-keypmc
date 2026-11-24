@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { ImageReveal } from "@/components/motion/image-reveal";
 import { Reveal } from "@/components/motion/reveal";
 import { SplitHeader } from "@/components/ui/heading";
-import { Icon } from "@/components/ui/icon";
+import { BrandIcon } from "@/components/icons/brand-icon";
 import { home } from "@/content/home";
 import { cn } from "@/lib/utils";
 
@@ -118,7 +118,7 @@ export function Services() {
               </div>
               <div className="flex items-start gap-4 p-7">
                 <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-gold-500 text-brown-950">
-                  <Icon name={services.specialist.icon} className="size-5" />
+                  <BrandIcon name={services.specialist.icon} size="sm" className="size-5 [--icon-accent:var(--color-cream)]" />
                 </span>
                 <div>
                   <p className="text-sm font-medium text-gold-200">Specialist licensed service</p>

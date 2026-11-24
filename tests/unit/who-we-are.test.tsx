@@ -29,4 +29,11 @@ describe("Who we are cards", () => {
       expect(home.images[division.image]).toBeDefined();
     }
   });
+
+  it("shows each division's own brand icon, set to redraw on hover", () => {
+    const { container } = render(<Intro />);
+    const icons = container.querySelectorAll("[data-arch-badge] svg.brand-icon");
+    expect(icons).toHaveLength(home.intro.divisions.length);
+    for (const icon of icons) expect(icon).toHaveAttribute("data-animate", "true");
+  });
 });

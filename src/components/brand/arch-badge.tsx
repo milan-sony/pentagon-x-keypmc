@@ -9,7 +9,7 @@ import { ARCH } from "./arch-geometry";
  */
 export function ArchBadge({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span data-arch-badge aria-hidden="true" className={cn("relative block h-20 w-16 shrink-0", className)}>
+    <span data-arch-badge aria-hidden="true" className={cn("relative block h-24 w-[4.75rem] shrink-0", className)}>
       <svg viewBox={ARCH.viewBox} fill="none" className="absolute inset-0 size-full overflow-visible">
         <path
           d={ARCH.outer}
@@ -31,7 +31,7 @@ export function ArchBadge({ children, className }: { children: ReactNode; classN
         />
         <path d={ARCH.keystone} className="fill-gold-500" />
       </svg>
-      <span className="absolute inset-x-0 top-[42%] flex justify-center text-gold-700 transition-[transform,color] duration-500 ease-portal group-hover:-translate-y-1.5 group-hover:text-gold-200 group-focus-visible:-translate-y-1.5 group-focus-visible:text-gold-200">
+      <span className="absolute inset-x-0 top-[36%] flex justify-center text-brown-700 transition-[transform,color] duration-500 ease-portal group-hover:-translate-y-1.5 group-hover:text-cream group-focus-visible:-translate-y-1.5 group-focus-visible:text-cream">
         {children}
       </span>
     </span>

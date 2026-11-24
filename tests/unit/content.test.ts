@@ -1,7 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { home, iconKeys, type Heading } from "@/content/home";
+import { glyphs } from "@/components/icons/glyphs";
+import { home, type Heading } from "@/content/home";
 
 const publicFile = (src: string) => join(process.cwd(), "public", src);
 
@@ -27,14 +28,20 @@ describe("homepage content", () => {
     expect(serialized).not.toMatch(/\baed\b|\busd\b|\bdhs?\b/);
   });
 
-  it("gives every capability, service, advantage and tool a description and a known icon", () => {
-    const groups = [home.intro.divisions, home.services.items, home.advantages.items, home.approach.tools];
-    for (const group of groups) {
-      for (const item of group) {
-        expect(item.title.trim()).not.toBe("");
-        expect(item.description.trim()).not.toBe("");
-        expect(iconKeys).toContain(item.icon);
-      }
+  it("gives every division, tool and the specialist service a description and a drawn icon", () => {
+    const drawn = Object.keys(glyphs);
+    for (const item of [...home.intro.divisions, ...home.approach.tools, home.services.specialist]) {
+      expect(item.title.trim()).not.toBe("");
+      expect(item.description.trim()).not.toBe("");
+      expect(drawn).toContain(item.icon);
+    }
+  });
+
+  it("gives every service and advantage a title and description, without icons the page never shows", () => {
+    for (const item of [...home.services.items, ...home.advantages.items]) {
+      expect(item.title.trim()).not.toBe("");
+      expect(item.description.trim()).not.toBe("");
+      expect(item).not.toHaveProperty("icon");
     }
   });
 
