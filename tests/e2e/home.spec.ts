@@ -100,4 +100,35 @@ test.describe("homepage", () => {
     await page.waitForTimeout(800);
     expect(await page.locator("video").evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
   });
+
+  test("the hero slideshow can be chosen, paused and resumed", async ({ page }) => {
+    await page.goto("/");
+    const carousel = page.getByRole("group", { name: "Featured sectors" });
+    await carousel.getByRole("button", { name: /^Show slide 03/ }).click();
+    await expect(carousel.getByRole("button", { name: /^Show slide 03/ })).toHaveAttribute("aria-current", "true");
+    await expect(carousel.getByRole("group", { name: /^3 of 3/ })).toBeVisible();
+
+    await carousel.getByRole("button", { name: "Pause slideshow" }).click();
+    await expect(page.locator("[data-progress-active]")).toHaveAttribute("data-paused", "true");
+    await carousel.getByRole("button", { name: "Play slideshow" }).click();
+    await expect(carousel.getByRole("button", { name: "Pause slideshow" })).toBeVisible();
+  });
+
+  test("the slideshow and cursor stay still for visitors who prefer reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    await expect(page.getByRole("button", { name: "Play slideshow" })).toBeVisible();
+    await page.waitForTimeout(6500);
+    await expect(page.getByRole("button", { name: /^Show slide 01/ })).toHaveAttribute("aria-current", "true");
+    await page.mouse.move(400, 400);
+    await expect(page.locator("[data-cursor-root]")).toHaveCount(0);
+  });
+
+  test("the divisions and stages are visible straight away with reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/#approach");
+    await expect(page.getByRole("heading", { name: /Close-Out/ })).toBeVisible();
+    await page.locator("#about").scrollIntoViewIfNeeded();
+    await expect(page.getByRole("link", { name: /Project Support Services/ })).toBeVisible();
+  });
 });

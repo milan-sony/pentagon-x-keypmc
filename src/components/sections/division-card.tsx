@@ -37,6 +37,8 @@ export function DivisionCard({ division, image, number, href }: DivisionCardProp
           src={image.src}
           alt=""
           fill
+          // Clipped to nothing until hover, so the lazy loader would never fetch it in time.
+          loading="eager"
           sizes="(min-width: 1024px) 20rem, (min-width: 640px) 50vw, 100vw"
           className="scale-110 object-cover opacity-0 mix-blend-luminosity transition-[opacity,transform] duration-1000 ease-portal group-hover:scale-100 group-hover:opacity-25 group-focus-visible:scale-100 group-focus-visible:opacity-25"
         />
