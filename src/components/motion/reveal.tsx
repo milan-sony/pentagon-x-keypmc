@@ -37,11 +37,11 @@ const group: Variants = {
   shown: { transition: { staggerChildren: 0.12 } },
 };
 
-/** Antra's `fade-top`: each item rises 100 px and fades in, one after another. */
-const item: Variants = {
-  hidden: { opacity: 0, y: 100 },
+/** Antra's `fade-top`: each item rises (100 px by default) and fades in, one after another. */
+const item = (y: number): Variants => ({
+  hidden: { opacity: 0, y },
   shown: { opacity: 1, y: 0, transition: { duration: 1, ease } },
-};
+});
 
 type GroupProps = { children: ReactNode; className?: string; as?: Tag; amount?: number; "aria-label"?: string };
 
@@ -49,16 +49,25 @@ type GroupProps = { children: ReactNode; className?: string; as?: Tag; amount?: 
 export function RevealGroup({ children, className, as = "div", amount = 0.15, ...rest }: GroupProps) {
   const Component = motion[as];
   return (
-    <Component {...rest} className={className} variants={group} initial="hidden" whileInView="shown" viewport={{ once: true, amount }}>
+    <Component
+      {...rest}
+      className={className}
+      variants={group}
+      initial="hidden"
+      whileInView="shown"
+      viewport={{ once: true, amount }}
+    >
       {children}
     </Component>
   );
 }
 
-export function RevealItem({ children, className, as = "div" }: { children: ReactNode; className?: string; as?: Tag }) {
+type ItemProps = { children: ReactNode; className?: string; as?: Tag; y?: number; title?: string };
+
+export function RevealItem({ children, className, as = "div", y = 100, title }: ItemProps) {
   const Component = motion[as];
   return (
-    <Component className={className} variants={item}>
+    <Component className={className} title={title} variants={item(y)}>
       {children}
     </Component>
   );

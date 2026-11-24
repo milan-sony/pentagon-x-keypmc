@@ -32,7 +32,12 @@ export function Parallax({ children, className, offset = 60, axis = "y" }: Paral
   );
 }
 
-function ParallaxLayer({ children, className, offset, axis }: Required<Omit<ParallaxProps, "className">> & { className?: string }) {
+function ParallaxLayer({
+  children,
+  className,
+  offset,
+  axis,
+}: Required<Omit<ParallaxProps, "className">> & { className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const shift = useTransform(scrollYProgress, [0, 1], [offset, -offset]);

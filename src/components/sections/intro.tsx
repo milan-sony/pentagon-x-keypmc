@@ -13,7 +13,11 @@ export function Intro() {
           <SplitHeader id="about-title" label={intro.label} heading={intro.title} lead={intro.body} />
         </Reveal>
 
-        <RevealGroup as="ul" aria-label="Our divisions" className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4">
+        <RevealGroup
+          as="ul"
+          aria-label="Our divisions"
+          className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4"
+        >
           {intro.divisions.map((division, i) => (
             <RevealItem as="li" key={division.title}>
               <DivisionCard

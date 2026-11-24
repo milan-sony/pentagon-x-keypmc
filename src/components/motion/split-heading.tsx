@@ -51,14 +51,7 @@ type SplitTextProps = {
  * whole phrase stays the element's accessible name; the word pieces are hidden
  * from assistive technology so it is not read word by word.
  */
-export function SplitText({
-  parts,
-  as = "h2",
-  id,
-  className,
-  variant = "rotate-in",
-  play,
-}: SplitTextProps) {
+export function SplitText({ parts, as = "h2", id, className, variant = "rotate-in", play }: SplitTextProps) {
   const Tag = motion[as];
   const label = parts.map((p) => p.text).join(" ");
   const trigger =
@@ -94,20 +87,12 @@ export function SplitText({
                 >
                   {variant === "chars" ? (
                     Array.from(word).map((char, c) => (
-                      <motion.span
-                        key={c}
-                        data-char
-                        className="inline-block"
-                        variants={pieces.chars}
-                      >
+                      <motion.span key={c} data-char className="inline-block" variants={pieces.chars}>
                         {char}
                       </motion.span>
                     ))
                   ) : (
-                    <motion.span
-                      className="inline-block origin-[50%_0%]"
-                      variants={pieces[variant]}
-                    >
+                    <motion.span className="inline-block origin-[50%_0%]" variants={pieces[variant]}>
                       {word}
                     </motion.span>
                   )}

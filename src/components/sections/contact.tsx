@@ -1,6 +1,6 @@
 import { Clock, FileBadge, Mail, MapPin, Phone } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { Reveal } from "@/components/motion/reveal";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { SectionLabel, TwoToneHeading } from "@/components/ui/heading";
 import { EnquiryForm } from "@/components/sections/enquiry-form";
 import { home } from "@/content/home";
@@ -34,10 +34,10 @@ export function Contact() {
         </Reveal>
 
         <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-14">
-          <Reveal className="lg:col-span-4">
-            <dl className="space-y-7">
+          <div className="lg:col-span-4">
+            <RevealGroup as="dl" className="space-y-7">
               {details.map(({ icon: DetailIcon, label, lines, href }) => (
-                <div key={label} className="flex gap-4">
+                <RevealItem y={24} key={label} className="flex gap-4">
                   <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-brown-950 text-gold-400">
                     <DetailIcon aria-hidden="true" className="size-[1.1rem]" />
                   </span>
@@ -55,12 +55,12 @@ export function Contact() {
                       </dd>
                     ))}
                   </div>
-                </div>
+                </RevealItem>
               ))}
-            </dl>
-          </Reveal>
+            </RevealGroup>
+          </div>
 
-          <Reveal delay={0.1} className="lg:col-span-8">
+          <Reveal y={80} delay={0.15} className="lg:col-span-8">
             <EnquiryForm />
           </Reveal>
         </div>

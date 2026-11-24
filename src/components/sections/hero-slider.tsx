@@ -75,7 +75,16 @@ type ControlsProps = {
  * Antra's numbered progress bars. The active bar's fill is a CSS animation
  * whose end moves the slideshow on, so pausing the bar pauses the slides.
  */
-export function SlideControls({ slides, index, paused, playing, onSelect, onAdvance, onTogglePlay, onHold }: ControlsProps) {
+export function SlideControls({
+  slides,
+  index,
+  paused,
+  playing,
+  onSelect,
+  onAdvance,
+  onTogglePlay,
+  onHold,
+}: ControlsProps) {
   return (
     <div
       className="flex items-center gap-5 sm:gap-7"
@@ -173,7 +182,10 @@ export function NextSlideThumb({ slide, onClick }: { slide: Slide; onClick: () =
           />
         </motion.div>
       </AnimatePresence>
-      <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-brown-950/80 via-brown-950/10 to-transparent" />
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-t from-brown-950/80 via-brown-950/10 to-transparent"
+      />
       <span className="absolute inset-x-5 bottom-4 block text-cream">
         <span className="block text-xs text-cream/70">Next</span>
         <span className="mt-0.5 block text-sm font-medium">{slide.caption}</span>

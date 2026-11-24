@@ -14,7 +14,17 @@ import { NextSlideThumb, SlideControls, SlideStack, type Slide } from "./hero-sl
 const ease = [0.22, 1, 0.36, 1] as const;
 
 /** Fades content up once the preloader has lifted. */
-function Rise({ ready, delay, className, children }: { ready: boolean; delay: number; className?: string; children: ReactNode }) {
+function Rise({
+  ready,
+  delay,
+  className,
+  children,
+}: {
+  ready: boolean;
+  delay: number;
+  className?: string;
+  children: ReactNode;
+}) {
   return (
     <motion.div
       className={className}
@@ -76,7 +86,12 @@ export function Hero() {
       onPointerMove={onPointerMove}
       className="relative isolate overflow-hidden bg-brown-950"
     >
-      <div role="group" aria-roledescription="carousel" aria-label="Featured sectors" className="flex min-h-[100svh] flex-col">
+      <div
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="Featured sectors"
+        className="flex min-h-[100svh] flex-col"
+      >
         <motion.div
           aria-live={paused ? "polite" : "off"}
           className="absolute inset-0 -z-20 overflow-hidden"

@@ -67,7 +67,13 @@ export function Odometer({ value, pad = 1, className, duration = 2.2, start = tr
       <span className="sr-only">{value}</span>
       <span ref={ref} aria-hidden="true" className="inline-flex">
         {digits.map((digit, i) => (
-          <DigitColumn key={i} digit={digit} play={inView && start} reduceMotion={reduceMotion} duration={duration + i * 0.25} />
+          <DigitColumn
+            key={i}
+            digit={digit}
+            play={inView && start}
+            reduceMotion={reduceMotion}
+            duration={duration + i * 0.25}
+          />
         ))}
       </span>
     </span>

@@ -16,7 +16,11 @@ function subscribe(onChange: () => void) {
 
 /** True only on devices with a precise, hovering pointer (a mouse or trackpad). */
 function useFinePointer() {
-  return useSyncExternalStore(subscribe, () => window.matchMedia(FINE_POINTER).matches, () => false);
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(FINE_POINTER).matches,
+    () => false,
+  );
 }
 
 /**

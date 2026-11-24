@@ -16,16 +16,19 @@ const { Parallax } = await import("@/components/motion/parallax");
 const { RevealGroup, RevealItem } = await import("@/components/motion/reveal");
 
 function mockPointer(fine: boolean) {
-  vi.spyOn(window, "matchMedia").mockImplementation((query: string) => ({
-    matches: query.includes("pointer: fine") ? fine : false,
-    media: query,
-    onchange: null,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }) as unknown as MediaQueryList);
+  vi.spyOn(window, "matchMedia").mockImplementation(
+    (query: string) =>
+      ({
+        matches: query.includes("pointer: fine") ? fine : false,
+        media: query,
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      }) as unknown as MediaQueryList,
+  );
 }
 
 afterEach(() => {
@@ -61,7 +64,9 @@ describe("SplitText", () => {
         parts={[{ text: "One accountable team" }, { text: "for the whole project.", className: "accent" }]}
       />,
     );
-    expect(screen.getByRole("heading", { level: 2, name: "One accountable team for the whole project." })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "One accountable team for the whole project." }),
+    ).toBeInTheDocument();
   });
 
   it("hides the split word pieces from assistive technology", () => {

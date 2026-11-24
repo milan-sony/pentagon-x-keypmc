@@ -34,7 +34,9 @@ describe("Hero slideshow", () => {
     render(<Hero />);
     const carousel = screen.getByRole("group", { name: "Featured sectors" });
     expect(carousel).toHaveAttribute("aria-roledescription", "carousel");
-    expect(within(carousel).getByRole("group", { name: `1 of 3: ${first.caption}` })).not.toHaveAttribute("aria-hidden");
+    expect(within(carousel).getByRole("group", { name: `1 of 3: ${first.caption}` })).not.toHaveAttribute(
+      "aria-hidden",
+    );
     // Hidden slides have no computed name, so look them up by their label.
     expect(carousel.querySelector(`[aria-label="2 of 3: ${second.caption}"]`)).toHaveAttribute("aria-hidden", "true");
   });
