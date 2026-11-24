@@ -24,15 +24,23 @@ export const iconKeys = [
   "layers",
   "database",
   "folder-open",
+  "clipboard-check",
+  "cog",
+  "package",
 ] as const;
 
 export type IconKey = (typeof iconKeys)[number];
 
+/** A headline set in two tones, as in the Antra layout: `start` in brown, `accent` in gold. */
+export type Heading = { start: string; accent: string };
+
 export type ImageKey =
-  | "hero"
+  | "heroSkyline"
+  | "palaceDome"
   | "palaceHall"
-  | "skyline"
   | "corniche"
+  | "planning"
+  | "contracts"
   | "supervision"
   | "design"
   | "drone"
@@ -47,7 +55,13 @@ export type Feature = { title: string; description: string; icon: IconKey };
 // Placeholder photography (Unsplash License, see public/images/CREDITS.md).
 // Replace with KeyPMC's own project photos when supplied.
 const images: Record<ImageKey, SiteImage> = {
-  hero: {
+  heroSkyline: {
+    src: "/images/hero-abu-dhabi-skyline.webp",
+    alt: "Abu Dhabi coastline and skyline at sunset seen from above",
+    width: 2400,
+    height: 1603,
+  },
+  palaceDome: {
     src: "/images/hero-qasr-al-watan.webp",
     alt: "Gilded dome and carved arches inside Qasr Al Watan, the presidential palace in Abu Dhabi",
     width: 1400,
@@ -59,17 +73,23 @@ const images: Record<ImageKey, SiteImage> = {
     width: 1600,
     height: 1067,
   },
-  skyline: {
-    src: "/images/abu-dhabi-skyline.webp",
-    alt: "Abu Dhabi coastline and skyline at sunset seen from above",
-    width: 1600,
-    height: 1069,
-  },
   corniche: {
     src: "/images/abu-dhabi-corniche.webp",
     alt: "Abu Dhabi towers and waterfront seen across calm turquoise water",
     width: 1600,
     height: 900,
+  },
+  planning: {
+    src: "/images/planning-review.webp",
+    alt: "Two professionals marking up architectural floor plans beside a calculator",
+    width: 1600,
+    height: 2307,
+  },
+  contracts: {
+    src: "/images/contract-review.webp",
+    alt: "Two people reviewing contract documents together at a meeting table",
+    width: 1600,
+    height: 1067,
   },
   supervision: {
     src: "/images/site-supervision.webp",
@@ -109,7 +129,7 @@ const images: Record<ImageKey, SiteImage> = {
   },
 };
 
-const sectionIds = ["about", "services", "why", "approach", "projects", "contact"] as const;
+const sectionIds = ["about", "services", "approach", "projects", "why", "contact"] as const;
 
 export const home = {
   sectionIds,
@@ -145,61 +165,73 @@ export const home = {
   cta: { label: "Discuss a project", href: "#contact" },
 
   hero: {
+    label: "Project management consultancy, Abu Dhabi",
     title: "We protect your investment from concept to handover.",
-    lead: "An Abu Dhabi project management consultancy that acts as the client’s representative across the whole project life cycle.",
+    lead: "The client’s representative across the whole project life cycle, with one accountable team for time, cost and quality.",
     primary: { label: "Discuss a project", href: "#contact" },
-    secondary: { label: "Our services", href: "#services" },
-    highlights: [
-      { value: "100%", label: "Emirati company" },
-      { value: "15", label: "Projects in portfolio" },
-      { value: "3", label: "Emirates served" },
-    ],
-    image: "hero" as ImageKey,
+    image: "heroSkyline" as ImageKey,
+    card: {
+      value: 15,
+      label: "Projects in portfolio",
+      points: ["Project management", "Construction supervision", "Cost & contract control"],
+    },
+    thumb: "palaceDome" as ImageKey,
   },
 
-  sectors: [
-    "Royal & Government",
-    "Aviation & Infrastructure",
-    "Hospitality & Leisure",
-    "Sports & Public Realm",
-    "Residential & Estates",
-    "Group Companies",
-  ],
-
-  about: {
+  intro: {
     label: "Who we are",
-    title: "One accountable team for the whole project.",
-    body: "Key International brings project management, design management, construction supervision, and cost and contract control under one team. We work on aviation infrastructure, royal and government developments, hospitality, sports and leisure, and private estates across the UAE.",
-    pillars: [
+    title: { start: "One accountable team", accent: "for the whole project." } satisfies Heading,
+    body: "Key International brings project management, design management, construction supervision, and cost and contract control under one team, across aviation infrastructure, royal and government developments, hospitality, sports and leisure, and private estates.",
+    divisions: [
       {
-        title: "Vision",
-        text: "To be the UAE’s most trusted project management partner, recognised for technical excellence, integrity and consistent delivery of projects of national significance.",
-        image: "skyline" as ImageKey,
+        title: "Project Management Consultancy",
+        description: "Project management, engineering supervision, QA/QC and HSE oversight.",
+        icon: "clipboard-check",
       },
       {
-        title: "Mission",
-        text: "To plan, manage and deliver projects safely, on time, within budget and to the highest quality, through disciplined governance and an experienced multidisciplinary team.",
-        image: "supervision" as ImageKey,
+        title: "Project Support Services",
+        description: "Project controls, finance and budget, resource management and cybersecurity.",
+        icon: "cog",
       },
+      {
+        title: "Operations & Project Delivery",
+        description: "Civil and architecture, MEP operations, site coordination and field supervision.",
+        icon: "hard-hat",
+      },
+      {
+        title: "Commercial & Supply Chain",
+        description: "Procurement, vendor management, logistics and inventory.",
+        icon: "package",
+      },
+    ] satisfies Feature[],
+  },
+
+  band: {
+    label: "Established 2025, Abu Dhabi",
+    title: { start: "Protecting investments", accent: "of national significance." } satisfies Heading,
+    checklist: [
+      "100% Emirati company",
+      "Member of United National Holding",
+      "Royal & government experience",
+      "QHSE in every phase",
     ],
-    values: [
-      { title: "Integrity", text: "Transparent advice and honest reporting" },
-      { title: "Excellence", text: "High standards in every deliverable" },
-      { title: "Accountability", text: "Clear ownership of outcomes" },
-      { title: "Collaboration", text: "One team with clients and partners" },
-      { title: "Sustainability", text: "Responsible use of resources" },
-    ],
+    body: "Our mission is to plan, manage and deliver projects safely, on time, within budget and to the highest quality, through disciplined governance and an experienced multidisciplinary team.",
+    values: "Integrity, Excellence, Accountability, Collaboration and Sustainability.",
+    button: { label: "Discuss a project", href: "#contact" },
+    image: "palaceDome" as ImageKey,
+    watermark: "KEY",
   },
 
   services: {
     label: "Our services",
-    title: "Integrated capabilities across the project life cycle.",
+    title: { start: "Integrated capabilities across", accent: "the project life cycle." } satisfies Heading,
+    lead: "From the first feasibility review to the final account, every discipline sits with one team on the client’s side.",
     items: [
       {
         title: "Project Management",
         description: "End-to-end planning, coordination and delivery on the client’s behalf.",
         icon: "workflow",
-        image: "skyline" as ImageKey,
+        image: "planning" as ImageKey,
       },
       {
         title: "Design Management",
@@ -217,13 +249,13 @@ export const home = {
         title: "Cost & Contracts Management",
         description: "Cost planning, procurement, contract administration and change control.",
         icon: "coins",
-        image: "corniche" as ImageKey,
+        image: "contracts" as ImageKey,
       },
       {
         title: "Planning & Project Controls",
         description: "Scheduling, risk management, earned value and performance reporting.",
         icon: "chart-gantt",
-        image: "airport" as ImageKey,
+        image: "corniche" as ImageKey,
       },
       {
         title: "Authority Approvals & Compliance",
@@ -240,86 +272,42 @@ export const home = {
     },
   },
 
-  advantages: {
-    label: "Why Key International",
-    title: "Trusted on projects that demand discretion.",
-    featured: {
-      value: "100%",
-      title: "Emirati company",
-      description: "Wholly owned by United National Holding and led by UAE nationals: a trusted local partner for government, royal and private clients.",
-      icon: "crown" as IconKey,
-    },
+  stats: {
+    note: "As at October 2026",
     items: [
-      {
-        title: "Single point of accountability",
-        description: "One team for management, design, supervision and cost control, with no gaps between providers.",
-        icon: "user-check",
-      },
-      {
-        title: "Royal & government experience",
-        description: "Sensitive, high-profile projects that demand discretion and protocol.",
-        icon: "landmark",
-      },
-      {
-        title: "Group strength",
-        description: "Access to the resources, systems and specialist companies of United National Holding.",
-        icon: "building",
-      },
-      {
-        title: "Commercial discipline",
-        description: "Rigorous cost planning, change control and contract administration that protect value.",
-        icon: "coins",
-      },
-      {
-        title: "Data-driven controls",
-        description: "Integrated planning and dashboards give clients real-time visibility.",
-        icon: "chart-pie",
-      },
-      {
-        title: "Safety & quality first",
-        description: "QHSE built into every phase, aligned with UAE authority requirements.",
-        icon: "shield-check",
-      },
-    ] satisfies Feature[],
+      { id: "portfolio", value: 15, label: "Projects in portfolio", detail: "Across aviation, royal, hospitality and estates" },
+      { id: "delivery", value: 3, label: "Projects in delivery", detail: "On site today in Abu Dhabi, Al Ain and Al Bahia" },
+      { id: "pipeline", value: 12, label: "Secured pipeline projects", detail: "From concept design to mobilisation" },
+      { id: "emirates", value: 3, label: "Emirates served", detail: "Abu Dhabi, Dubai and Fujairah" },
+    ],
   },
 
   approach: {
-    label: "Delivery approach",
-    title: "Adding value at every stage.",
+    label: "How we work",
+    title: { start: "Adding value", accent: "at every stage." } satisfies Heading,
     lead: "Acting as the client’s extended arm: accountable for time, cost and quality.",
     stages: [
-      { title: "Initiation", activities: ["Client objectives", "Feasibility review", "Stakeholder mapping"] },
-      { title: "Concept & Design", activities: ["Option analysis", "Design reviews", "Cost plan"] },
-      { title: "Procurement", activities: ["Tender strategy", "Bid evaluation", "Contract award"] },
-      { title: "Execution", activities: ["Supervision", "Quality control", "Change management"] },
-      { title: "Monitoring", activities: ["Schedule & cost control", "Risk management", "Reporting"] },
-      { title: "Close-Out", activities: ["Testing & handover", "Final accounts", "Lessons learned"] },
+      { title: "Initiation", activities: ["Client objectives", "Feasibility review", "Stakeholder mapping"], image: "planning" as ImageKey },
+      { title: "Concept & Design", activities: ["Option analysis", "Design reviews", "Cost plan"], image: "design" as ImageKey },
+      { title: "Procurement", activities: ["Tender strategy", "Bid evaluation", "Contract award"], image: "contracts" as ImageKey },
+      { title: "Execution", activities: ["Supervision", "Quality control", "Change management"], image: "supervision" as ImageKey },
+      { title: "Monitoring", activities: ["Schedule & cost control", "Risk management", "Reporting"], image: "drone" as ImageKey },
+      { title: "Close-Out", activities: ["Testing & handover", "Final accounts", "Lessons learned"], image: "palaceHall" as ImageKey },
     ],
     toolsTitle: "Tools we work with",
     tools: [
-      { title: "Planning & scheduling", description: "Primavera P6 and MS Project baselines and look-ahead programmes", icon: "chart-gantt" },
+      { title: "Primavera P6 & MS Project", description: "Baselines, critical path and look-ahead programmes", icon: "chart-gantt" },
       { title: "BIM coordination", description: "Model-based design review, clash detection and quantity checks", icon: "layers" },
-      { title: "Dashboards", description: "Power BI reporting on progress, cost and risk in real time", icon: "chart-pie" },
+      { title: "Power BI dashboards", description: "Progress, cost and risk reporting in real time", icon: "chart-pie" },
       { title: "ERP-integrated controls", description: "Cost, procurement and document control linked to group systems", icon: "database" },
       { title: "Drone surveys", description: "Licensed aerial survey for progress and as-built records", icon: "drone" },
       { title: "Document control", description: "Structured correspondence, submittal and RFI management", icon: "folder-open" },
     ] satisfies Feature[],
   },
 
-  stats: {
-    title: "Our portfolio at a glance",
-    note: "As at October 2026",
-    items: [
-      { id: "portfolio", value: 15, label: "Projects in portfolio" },
-      { id: "delivery", value: 3, label: "Projects in delivery" },
-      { id: "pipeline", value: 12, label: "Secured pipeline projects" },
-      { id: "emirates", value: 3, label: "Emirates served" },
-    ],
-  },
-
   portfolio: {
-    label: "Projects",
-    title: "Projects in delivery across the UAE.",
+    label: "Our projects",
+    title: { start: "Projects in delivery", accent: "across the UAE." } satisfies Heading,
     confidentialityNote: "Client names and project values are kept confidential. Photos are representative.",
     inDelivery: [
       {
@@ -349,11 +337,78 @@ export const home = {
       title: "Secured pipeline",
       description: "Royal palace developments, a Fujairah beach resort, Khalifa Sports Complex, estate programmes and more, from concept design to mobilisation.",
     },
+    watermark: "Projects",
+  },
+
+  sectors: [
+    "Royal & Government",
+    "Aviation & Infrastructure",
+    "Hospitality & Leisure",
+    "Sports & Public Realm",
+    "Residential & Estates",
+    "Group Companies",
+  ],
+
+  advantages: {
+    label: "Why Key International",
+    title: { start: "Trusted on projects", accent: "that demand discretion." } satisfies Heading,
+    items: [
+      {
+        title: "100% Emirati company",
+        description: "Wholly owned by United National Holding and led by UAE nationals.",
+        icon: "crown",
+        image: "heroSkyline" as ImageKey,
+      },
+      {
+        title: "Single point of accountability",
+        description: "One team for management, design, supervision and cost, with no gaps between providers.",
+        icon: "user-check",
+        image: "planning" as ImageKey,
+      },
+      {
+        title: "Royal & government experience",
+        description: "Sensitive, high-profile projects that demand discretion and protocol.",
+        icon: "landmark",
+        image: "palaceDome" as ImageKey,
+      },
+      {
+        title: "Group strength",
+        description: "Access to the resources, systems and specialist companies of UNH.",
+        icon: "building",
+        image: "corniche" as ImageKey,
+      },
+      {
+        title: "Commercial discipline",
+        description: "Rigorous cost planning, change control and contract administration.",
+        icon: "coins",
+        image: "contracts" as ImageKey,
+      },
+      {
+        title: "Data-driven controls",
+        description: "Integrated planning and dashboards give clients real-time visibility.",
+        icon: "chart-pie",
+        image: "design" as ImageKey,
+      },
+      {
+        title: "Safety & quality first",
+        description: "QHSE built into every phase, aligned with UAE authority requirements.",
+        icon: "shield-check",
+        image: "supervision" as ImageKey,
+      },
+    ] satisfies (Feature & { image: ImageKey })[],
+  },
+
+  videoCta: {
+    title: "Tell us about your project.",
+    text: "From a private estate to a project of national significance, we act for you from the first brief to the final handover.",
+    button: { label: "Discuss a project", href: "#contact" },
+    // Mixkit Stock Video Free License, see public/images/CREDITS.md.
+    video: { src: "/video/site-aerial.mp4", poster: "/video/site-aerial-poster.webp" },
   },
 
   contact: {
     label: "Contact",
-    title: "Tell us about your project.",
+    title: { start: "Let’s talk about", accent: "your project." } satisfies Heading,
     lead: "Share a few details and our team will get back to you.",
     form: {
       fields: {
@@ -376,6 +431,8 @@ export const home = {
 
   footer: {
     descriptor: "Project management consultancy in Abu Dhabi. A member of United National Holding.",
+    wordmark: "Key International",
+    background: "corniche" as ImageKey,
   },
 
   images,

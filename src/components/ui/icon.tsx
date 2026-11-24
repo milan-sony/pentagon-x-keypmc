@@ -2,6 +2,8 @@ import {
   Building2,
   ChartGantt,
   ChartPie,
+  ClipboardCheck,
+  Cog,
   Coins,
   Crown,
   Database,
@@ -11,6 +13,7 @@ import {
   HardHat,
   Landmark,
   Layers,
+  Package,
   ShieldCheck,
   Stamp,
   UserCheck,
@@ -36,6 +39,9 @@ const icons: Record<IconKey, LucideIcon> = {
   layers: Layers,
   database: Database,
   "folder-open": FolderOpen,
+  "clipboard-check": ClipboardCheck,
+  cog: Cog,
+  package: Package,
 };
 
 /** Maps content icon keys to Lucide icons so the content file stays plain data. */

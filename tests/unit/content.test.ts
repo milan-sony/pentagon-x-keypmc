@@ -1,9 +1,13 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { home, iconKeys } from "@/content/home";
+import { home, iconKeys, type Heading } from "@/content/home";
+
+const publicFile = (src: string) => join(process.cwd(), "public", src);
 
 describe("homepage content", () => {
   it("keeps portfolio stats consistent with the project lists", () => {
-    const { portfolio, stats } = home;
+    const { portfolio, stats, hero } = home;
     const total = stats.items.find((s) => s.id === "portfolio")?.value;
     const inDelivery = stats.items.find((s) => s.id === "delivery")?.value;
     const pipeline = stats.items.find((s) => s.id === "pipeline")?.value;
@@ -11,6 +15,7 @@ describe("homepage content", () => {
     expect(inDelivery).toBe(portfolio.inDelivery.length);
     expect(pipeline).toBe(portfolio.pipeline.count);
     expect(total).toBe(portfolio.inDelivery.length + portfolio.pipeline.count);
+    expect(hero.card.value).toBe(total);
   });
 
   it("never exposes confidential client names or project values", () => {
@@ -22,8 +27,8 @@ describe("homepage content", () => {
     expect(serialized).not.toMatch(/\baed\b|\busd\b|\bdhs?\b/);
   });
 
-  it("gives every service, advantage and tool a description and a known icon", () => {
-    const groups = [home.services.items, home.advantages.items, home.approach.tools];
+  it("gives every capability, service, advantage and tool a description and a known icon", () => {
+    const groups = [home.intro.divisions, home.services.items, home.advantages.items, home.approach.tools];
     for (const group of groups) {
       for (const item of group) {
         expect(item.title.trim()).not.toBe("");
@@ -33,7 +38,23 @@ describe("homepage content", () => {
     }
   });
 
-  it("describes the six-stage delivery life cycle in order", () => {
+  it("writes every two-tone heading with both halves", () => {
+    const headings: Heading[] = [
+      home.intro.title,
+      home.band.title,
+      home.services.title,
+      home.approach.title,
+      home.portfolio.title,
+      home.advantages.title,
+      home.contact.title,
+    ];
+    for (const heading of headings) {
+      expect(heading.start.trim()).not.toBe("");
+      expect(heading.accent.trim()).not.toBe("");
+    }
+  });
+
+  it("describes the six-stage delivery life cycle in order, each with a photo", () => {
     expect(home.approach.stages.map((s) => s.title)).toEqual([
       "Initiation",
       "Concept & Design",
@@ -44,6 +65,7 @@ describe("homepage content", () => {
     ]);
     for (const stage of home.approach.stages) {
       expect(stage.activities).toHaveLength(3);
+      expect(home.images[stage.image]).toBeDefined();
     }
   });
 
@@ -62,10 +84,15 @@ describe("homepage content", () => {
     expect(home.company.licence).toBe("CN-5872131");
   });
 
-  it("gives every image descriptive alt text", () => {
+  it("gives every image descriptive alt text and a file that exists", () => {
     for (const image of Object.values(home.images)) {
       expect(image.alt.length).toBeGreaterThan(15);
-      expect(image.src.startsWith("/images/")).toBe(true);
+      expect(existsSync(publicFile(image.src))).toBe(true);
     }
+  });
+
+  it("points the video call to action at a real clip and poster", () => {
+    expect(existsSync(publicFile(home.videoCta.video.src))).toBe(true);
+    expect(existsSync(publicFile(home.videoCta.video.poster))).toBe(true);
   });
 });
