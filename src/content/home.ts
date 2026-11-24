@@ -30,7 +30,9 @@ export type IconKey = (typeof iconKeys)[number];
 
 export type ImageKey =
   | "hero"
-  | "palace"
+  | "palaceHall"
+  | "skyline"
+  | "corniche"
   | "supervision"
   | "design"
   | "drone"
@@ -42,54 +44,68 @@ export type SiteImage = { src: string; alt: string; width: number; height: numbe
 
 export type Feature = { title: string; description: string; icon: IconKey };
 
+// Placeholder photography (Unsplash License, see public/images/CREDITS.md).
+// Replace with KeyPMC's own project photos when supplied.
 const images: Record<ImageKey, SiteImage> = {
   hero: {
-    src: "/images/hero-abu-dhabi.webp",
-    alt: "Abu Dhabi skyline at golden hour with a construction site and tower cranes in the foreground",
-    width: 1600,
-    height: 2000,
+    src: "/images/hero-qasr-al-watan.webp",
+    alt: "Gilded dome and carved arches inside Qasr Al Watan, the presidential palace in Abu Dhabi",
+    width: 1400,
+    height: 1867,
   },
-  palace: {
-    src: "/images/palace-architecture.webp",
-    alt: "Arched colonnade of a palace courtyard in warm evening light",
+  palaceHall: {
+    src: "/images/palace-hall.webp",
+    alt: "Great hall of Qasr Al Watan with white marble arches and a domed ceiling",
     width: 1600,
-    height: 1200,
+    height: 1067,
+  },
+  skyline: {
+    src: "/images/abu-dhabi-skyline.webp",
+    alt: "Abu Dhabi coastline and skyline at sunset seen from above",
+    width: 1600,
+    height: 1069,
+  },
+  corniche: {
+    src: "/images/abu-dhabi-corniche.webp",
+    alt: "Abu Dhabi towers and waterfront seen across calm turquoise water",
+    width: 1600,
+    height: 900,
   },
   supervision: {
     src: "/images/site-supervision.webp",
-    alt: "Engineers in hard hats reviewing drawings on an active construction site",
+    alt: "Site worker in a hard hat and safety vest checking reinforcement on a building under construction",
     width: 1600,
-    height: 1200,
+    height: 1067,
   },
   design: {
     src: "/images/design-review.webp",
-    alt: "Architectural drawings and a building model on a design review table",
+    alt: "Architectural floor plans and drawings laid out on a marble desk for review",
     width: 1600,
-    height: 1200,
+    height: 2399,
   },
   drone: {
     src: "/images/drone-survey.webp",
-    alt: "Survey drone flying above a desert construction site",
-    width: 1600,
-    height: 1200,
+    alt: "Top-down drone view of earthworks and vehicle tracks on a desert construction site",
+    width: 1400,
+    height: 1400,
   },
   airport: {
-    src: "/images/airport-fuel-farm.webp",
-    alt: "Fuel storage tanks beside an executive airport apron at dusk",
+    src: "/images/executive-airport.webp",
+    alt: "Business jet parked on an airport apron at sunset",
     width: 1600,
-    height: 1200,
+    height: 1023,
   },
   estateAlAin: {
     src: "/images/estate-al-ain.webp",
-    alt: "Private farm estate villa among date palms near Al Ain",
+    alt: "Courtyard of a desert estate with a reflecting pool, sand-coloured walls and date palms",
     width: 1600,
-    height: 1200,
+    height: 1067,
   },
   estateAlBahia: {
     src: "/images/estate-al-bahia.webp",
-    alt: "Contemporary estate residence with landscaped gardens in Al Bahia, Abu Dhabi",
+    alt: "Arched walls and palm trees around a pool in a traditional-style estate",
     width: 1600,
-    height: 1200,
+    height: 1067,
   },
 };
 
@@ -136,7 +152,7 @@ export const home = {
     highlights: [
       { value: "100%", label: "Emirati company" },
       { value: "15", label: "Projects in portfolio" },
-      { value: "UNH", label: "Member of United National Holding" },
+      { value: "3", label: "Emirates served" },
     ],
     image: "hero" as ImageKey,
   },
@@ -158,7 +174,7 @@ export const home = {
       {
         title: "Vision",
         text: "To be the UAE’s most trusted project management partner, recognised for technical excellence, integrity and consistent delivery of projects of national significance.",
-        image: "palace" as ImageKey,
+        image: "skyline" as ImageKey,
       },
       {
         title: "Mission",
@@ -183,7 +199,7 @@ export const home = {
         title: "Project Management",
         description: "End-to-end planning, coordination and delivery on the client’s behalf.",
         icon: "workflow",
-        image: "supervision" as ImageKey,
+        image: "skyline" as ImageKey,
       },
       {
         title: "Design Management",
@@ -201,7 +217,7 @@ export const home = {
         title: "Cost & Contracts Management",
         description: "Cost planning, procurement, contract administration and change control.",
         icon: "coins",
-        image: "design" as ImageKey,
+        image: "corniche" as ImageKey,
       },
       {
         title: "Planning & Project Controls",
@@ -213,7 +229,7 @@ export const home = {
         title: "Authority Approvals & Compliance",
         description: "Permits, regulatory approvals, stakeholder coordination and statutory compliance.",
         icon: "stamp",
-        image: "palace" as ImageKey,
+        image: "palaceHall" as ImageKey,
       },
     ] satisfies (Feature & { image: ImageKey })[],
     specialist: {
@@ -228,7 +244,8 @@ export const home = {
     label: "Why Key International",
     title: "Trusted on projects that demand discretion.",
     featured: {
-      title: "100% Emirati company",
+      value: "100%",
+      title: "Emirati company",
       description: "Wholly owned by United National Holding and led by UAE nationals: a trusted local partner for government, royal and private clients.",
       icon: "crown" as IconKey,
     },
@@ -303,7 +320,7 @@ export const home = {
   portfolio: {
     label: "Projects",
     title: "Projects in delivery across the UAE.",
-    confidentialityNote: "Client names and project values are kept confidential.",
+    confidentialityNote: "Client names and project values are kept confidential. Photos are representative.",
     inDelivery: [
       {
         name: "Al Bateen Executive Airport – Fuel Farm Relocation",
