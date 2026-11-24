@@ -205,23 +205,27 @@ export const home = {
         title: "Project Management Consultancy",
         description: "Project management, engineering supervision, QA/QC and HSE oversight.",
         icon: "clipboard-check",
+        image: "supervision",
       },
       {
         title: "Project Support Services",
         description: "Project controls, finance and budget, resource management and cybersecurity.",
         icon: "cog",
+        image: "design",
       },
       {
         title: "Operations & Project Delivery",
         description: "Civil and architecture, MEP operations, site coordination and field supervision.",
         icon: "hard-hat",
+        image: "drone",
       },
       {
         title: "Commercial & Supply Chain",
         description: "Procurement, vendor management, logistics and inventory.",
         icon: "package",
+        image: "contracts",
       },
-    ] satisfies Feature[],
+    ] satisfies (Feature & { image: ImageKey })[],
   },
 
   band: {
