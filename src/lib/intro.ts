@@ -1,10 +1,10 @@
 import { useSyncExternalStore } from "react";
 import { INTRO_SKIP_ATTR } from "@/lib/intro-script";
 
-export { INTRO_SEEN_KEY, INTRO_SKIP_ATTR } from "@/lib/intro-script";
+export { INTRO_SKIP_ATTR } from "@/lib/intro-script";
 
 /**
- * Client-side store that lets the hero wait for the first-visit preloader.
+ * Client-side store that lets the hero wait for the preloader.
  * See src/lib/intro-script.ts for how the intro is skipped before first paint.
  */
 let ready = false;

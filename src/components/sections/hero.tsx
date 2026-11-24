@@ -41,7 +41,7 @@ export function Hero() {
   const { hero, images } = home;
   const slides: Slide[] = hero.slides.map((s) => ({ image: images[s.image], caption: s.caption }));
 
-  // Holds the entrance and the slideshow until the first-visit preloader starts to lift.
+  // Holds the entrance and the slideshow until the preloader starts to lift.
   const ready = useIntroReady();
   const reduceMotion = useReducedMotion() ?? false;
 

@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import { INTRO_SKIP_ATTR, markIntroReady, resetIntroForTests, useIntroReady } from "@/lib/intro";
+import { introHeadScript } from "@/lib/intro-script";
 import { Preloader } from "@/components/layout/preloader";
 
 function Probe() {
@@ -30,6 +31,14 @@ describe("intro store", () => {
     document.documentElement.setAttribute(INTRO_SKIP_ATTR, "");
     render(<Probe />);
     expect(screen.getByText("ready")).toBeInTheDocument();
+  });
+});
+
+describe("intro head script", () => {
+  it("ignores earlier visits in the session, so the intro plays on every load", () => {
+    sessionStorage.setItem("keypmc-intro-seen", "1");
+    new Function(introHeadScript)();
+    expect(document.documentElement.hasAttribute(INTRO_SKIP_ATTR)).toBe(false);
   });
 });
 
