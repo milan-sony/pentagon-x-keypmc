@@ -36,6 +36,8 @@ export type Heading = { start: string; accent: string };
 
 export type ImageKey =
   | "heroSkyline"
+  | "heroPalaceHall"
+  | "heroAirport"
   | "palaceDome"
   | "palaceHall"
   | "corniche"
@@ -60,6 +62,18 @@ const images: Record<ImageKey, SiteImage> = {
     alt: "Abu Dhabi coastline and skyline at sunset seen from above",
     width: 2400,
     height: 1603,
+  },
+  heroPalaceHall: {
+    src: "/images/hero-palace-hall.webp",
+    alt: "Marble arches and a gilded domed ceiling in the great hall of Qasr Al Watan, Abu Dhabi",
+    width: 2400,
+    height: 1600,
+  },
+  heroAirport: {
+    src: "/images/hero-executive-airport.webp",
+    alt: "Business jet on an executive airport apron under a warm evening sky",
+    width: 2400,
+    height: 1535,
   },
   palaceDome: {
     src: "/images/hero-qasr-al-watan.webp",
@@ -169,13 +183,17 @@ export const home = {
     title: "We protect your investment from concept to handover.",
     lead: "The client’s representative across the whole project life cycle, with one accountable team for time, cost and quality.",
     primary: { label: "Discuss a project", href: "#contact" },
-    image: "heroSkyline" as ImageKey,
+    /** Sectors the slideshow cycles through, in order. */
+    slides: [
+      { image: "heroSkyline", caption: "Abu Dhabi and beyond" },
+      { image: "heroPalaceHall", caption: "Royal & government" },
+      { image: "heroAirport", caption: "Aviation & infrastructure" },
+    ] satisfies { image: ImageKey; caption: string }[],
     card: {
       value: 15,
       label: "Projects in portfolio",
       points: ["Project management", "Construction supervision", "Cost & contract control"],
     },
-    thumb: "palaceDome" as ImageKey,
   },
 
   intro: {

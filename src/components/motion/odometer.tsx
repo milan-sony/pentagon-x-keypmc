@@ -28,8 +28,10 @@ function DigitColumn({ digit, play, reduceMotion, duration }: ColumnProps) {
   }, [play, reduceMotion, digit, duration, y]);
 
   return (
-    <span data-digit className="inline-block h-[1em] overflow-hidden leading-none">
-      <motion.span className="flex flex-col" style={{ y }}>
+    // The hidden final digit sets the column's width, so "15" keeps its natural spacing.
+    <span data-digit className="relative inline-block h-[1em] overflow-x-visible overflow-y-clip leading-none">
+      <span className="invisible">{digit}</span>
+      <motion.span className="absolute inset-x-0 top-0 flex flex-col items-center" style={{ y }}>
         {DIGITS.map((d, i) => (
           <span key={i} className="block h-[1em] leading-none">
             {d}
@@ -40,14 +42,21 @@ function DigitColumn({ digit, play, reduceMotion, duration }: ColumnProps) {
   );
 }
 
-type OdometerProps = { value: number; pad?: number; className?: string; duration?: number };
+type OdometerProps = {
+  value: number;
+  pad?: number;
+  className?: string;
+  duration?: number;
+  /** Holds the roll until true, for counters that wait on another entrance (the hero card). */
+  start?: boolean;
+};
 
 /**
  * Antra-style rolling counter. The digits sit at their final positions in the
  * server HTML (so the number is right without JavaScript); on the client they
  * reset out of view and roll one full turn into place when scrolled to.
  */
-export function Odometer({ value, pad = 1, className, duration = 2.2 }: OdometerProps) {
+export function Odometer({ value, pad = 1, className, duration = 2.2, start = true }: OdometerProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
   const reduceMotion = useReducedMotion() ?? false;
@@ -58,7 +67,7 @@ export function Odometer({ value, pad = 1, className, duration = 2.2 }: Odometer
       <span className="sr-only">{value}</span>
       <span ref={ref} aria-hidden="true" className="inline-flex">
         {digits.map((digit, i) => (
-          <DigitColumn key={i} digit={digit} play={inView} reduceMotion={reduceMotion} duration={duration + i * 0.25} />
+          <DigitColumn key={i} digit={digit} play={inView && start} reduceMotion={reduceMotion} duration={duration + i * 0.25} />
         ))}
       </span>
     </span>
