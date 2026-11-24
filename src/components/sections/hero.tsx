@@ -10,7 +10,6 @@ import {
   useTransform,
 } from "motion/react";
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
-import { ArchOutline } from "@/components/brand/arch";
 import { Odometer } from "@/components/motion/odometer";
 import { SplitText } from "@/components/motion/split-heading";
 import { SectionLabel } from "@/components/ui/heading";
@@ -77,8 +76,6 @@ export function Hero() {
   const smoothY = useSpring(pointerY, { stiffness: 60, damping: 20 });
   const imageX = useTransform(smoothX, (v) => v * -22);
   const imageY = useTransform(smoothY, (v) => v * -14);
-  const archX = useTransform(smoothX, (v) => v * 40);
-  const archY = useTransform(smoothY, (v) => v * 24);
   const cardX = useTransform(smoothX, (v) => v * 12);
 
   // A warm light that follows the mouse across the photo; shown once a mouse moves (never on touch).
@@ -146,13 +143,6 @@ export function Hero() {
           />
         ) : null}
 
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute right-[2%] bottom-[-6%] -z-10 hidden h-[86%] text-gold-200/45 md:block"
-          style={{ x: archX, y: archY }}
-        >
-          <ArchOutline play={ready} className="h-full w-auto" />
-        </motion.div>
 
         <motion.div
           className="container-site flex flex-1 flex-col justify-end pt-36 pb-14 sm:pb-16 lg:pb-20"

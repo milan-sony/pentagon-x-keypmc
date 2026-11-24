@@ -79,23 +79,32 @@ export function Approach() {
           })}
         </RevealGroup>
 
-        <Reveal className="mt-16 lg:mt-32">
-          <h3 className="font-sans text-sm font-medium text-brown-700">{approach.toolsTitle}</h3>
-          <RevealGroup as="ul" className="mt-5 flex flex-wrap gap-2.5">
+        {/* The toolkit: a ruled panel, one cell per tool, with what each is used for. */}
+        <div className="mt-16 lg:mt-20">
+          <Reveal>
+            <h3 id="tools-title" className="text-[2rem] leading-tight font-medium text-brown-950">
+              {approach.toolsTitle}
+            </h3>
+          </Reveal>
+          <RevealGroup
+            as="ul"
+            aria-labelledby="tools-title"
+            className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-brown-950/10 bg-brown-950/10 sm:grid-cols-3 xl:grid-cols-6"
+          >
             {approach.tools.map((tool) => (
               <RevealItem
                 as="li"
-                y={16}
+                y={40}
                 key={tool.title}
-                title={tool.description}
-                className="inline-flex items-center gap-2 rounded-full border border-brown-950/12 bg-white px-4 py-2.5 text-[0.95rem] text-brown-950"
+                className="group flex flex-col bg-ivory p-5 transition-colors duration-500 hover:bg-white sm:p-6"
               >
-                <BrandIcon name={tool.icon} size="sm" className="size-[1.15rem] text-brown-700" />
-                {tool.title}
+                <BrandIcon name={tool.icon} animate className="size-10 text-brown-700" />
+                <span className="mt-6 text-lg leading-snug font-medium text-brown-950">{tool.title}</span>
+                <span className="mt-2 text-sm leading-relaxed text-brown-600">{tool.description}</span>
               </RevealItem>
             ))}
           </RevealGroup>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

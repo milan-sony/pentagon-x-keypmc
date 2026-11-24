@@ -43,7 +43,14 @@ const item = (y: number): Variants => ({
   shown: { opacity: 1, y: 0, transition: { duration: 1, ease } },
 });
 
-type GroupProps = { children: ReactNode; className?: string; as?: Tag; amount?: number; "aria-label"?: string };
+type GroupProps = {
+  children: ReactNode;
+  className?: string;
+  as?: Tag;
+  amount?: number;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+};
 
 /** Triggers its `RevealItem` children in sequence when the group scrolls into view. */
 export function RevealGroup({ children, className, as = "div", amount = 0.15, ...rest }: GroupProps) {
