@@ -71,4 +71,33 @@ test.describe("homepage", () => {
     await expect(page.getByRole("heading", { name: "Projects in delivery across the UAE." })).toBeVisible();
     await expect(page.getByText("Al Bateen Executive Airport – Fuel Farm Relocation")).toBeVisible();
   });
+
+  test("the header is transparent over the hero and solid after scrolling", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    const header = page.getByRole("banner");
+    await expect(header).toHaveAttribute("data-scrolled", "false");
+    await page.evaluate(() => window.scrollTo(0, 1200));
+    await expect(header).toHaveAttribute("data-scrolled", "true");
+  });
+
+  test("the video call to action has a poster that loads and plays muted inline", async ({ page }) => {
+    await page.goto("/");
+    const video = page.locator("video");
+    await expect(video).toHaveAttribute("poster", /site-aerial-poster/);
+    const posterOk = await page.evaluate(async () => {
+      const res = await fetch(document.querySelector("video")!.getAttribute("poster")!);
+      return res.ok;
+    });
+    expect(posterOk).toBe(true);
+    expect(await video.evaluate((v: HTMLVideoElement) => v.muted && v.loop && v.playsInline)).toBe(true);
+  });
+
+  test("the video does not play for visitors who prefer reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    await page.locator("video").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(800);
+    expect(await page.locator("video").evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+  });
 });

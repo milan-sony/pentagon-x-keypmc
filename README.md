@@ -2,7 +2,7 @@
 
 Corporate website for Key International Engineering Projects Management Consultancy L.L.C S.P.C, an Abu Dhabi project management consultancy and member of United National Holding.
 
-This phase delivers the **English homepage**. Its layout follows the Qleviq "IT Consult" template, restyled in the brand's brown and gold.
+This phase delivers the **English homepage**. On the `redesign/antra` branch its layout follows the Antra architecture template (full-bleed hero, split two-tone section headers, staggered process cards, a video call to action and a wordmark footer), restyled in the brand's brown and gold with serif headings. The earlier Qleviq-based version remains on `main`.
 
 ## Stack
 
@@ -38,11 +38,13 @@ The first time you run Playwright, install its browser with `npx playwright inst
 ```
 src/content/home.ts      All homepage copy, stats, services and projects. Edit text here.
 src/app/                 Layout, fonts, metadata, favicon and Open Graph image
-src/components/layout/   Top bar, header (with mobile menu) and footer
+src/components/layout/   Header (transparent over the hero, mobile menu), footer, preloader, back-to-top progress button
 src/components/sections/ One file per homepage section
+src/components/ui/       Shared pieces: two-tone headings, pill labels and buttons, icons
 src/components/motion/   Reveal and CountUp animation helpers (respect reduced motion)
 public/brand/            Logos from the official logo pack (viewBox trimmed to the artwork)
 public/images/           Photography; see CREDITS.md
+public/video/            The call-to-action clip and its poster (credited in public/images/CREDITS.md)
 tests/unit, tests/e2e    Vitest and Playwright tests
 ```
 
@@ -64,4 +66,4 @@ The fonts are Cormorant Garamond for headings, Inter for body text and Cinzel (t
 - **Enquiry form.** It validates input but does not send anything yet. To connect it, add a delivery target, such as an API route with an email service, in `src/components/sections/enquiry-form.tsx` (marked `TODO(go-live)`).
 - **Phone and email.** These are `null` in `src/content/home.ts`. Once you add them, they appear automatically in the contact section.
 - **Portfolio counts.** The figures are as at October 2026. Confirm them with KeyPMC.
-- **Photography.** The current photos are Unsplash placeholders. Replace them with KeyPMC's own project photos, and keep client names and project values out of the site.
+- **Photography and video.** The current photos are Unsplash placeholders and the video is a Mixkit clip. Replace them with KeyPMC's own project photos, and keep client names and project values out of the site.
