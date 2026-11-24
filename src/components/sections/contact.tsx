@@ -28,7 +28,7 @@ export function Contact() {
     <section id="contact" aria-labelledby="contact-title" className="py-24 lg:py-32">
       <div className="container-site">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <SectionLabel>{contact.label}</SectionLabel>
+          <SectionLabel align="center">{contact.label}</SectionLabel>
           <TwoToneHeading id="contact-title" heading={contact.title} className="mt-6" />
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-brown-600">{contact.lead}</p>
         </Reveal>

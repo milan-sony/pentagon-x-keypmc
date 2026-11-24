@@ -159,11 +159,8 @@ export function Hero() {
           style={reduceMotion ? undefined : { y: exitY, opacity: exitOpacity }}
         >
           <Rise ready={ready} delay={0}>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <SectionLabel tone="dark" className="bg-brown-950/30 backdrop-blur-sm">
-                {hero.label}
-              </SectionLabel>
-              <span aria-hidden="true" className="hidden h-px w-10 bg-gold-400/70 sm:block" />
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <SectionLabel tone="dark">{hero.label}</SectionLabel>
               <p className="font-display text-xl text-cream sm:text-[1.65rem]">
                 <SectorLine slides={slides} index={index} previous={previous} />
               </p>
