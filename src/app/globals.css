@@ -180,6 +180,72 @@
   }
 }
 
+/*
+ * Hand-drawn brand icons (src/components/icons). Lines take the text colour;
+ * the one accent is gold. Strokes keep a constant on-screen weight, and the
+ * small size drops the detail lines so it stays legible.
+ */
+.brand-icon {
+  overflow: visible;
+}
+.brand-icon [data-stroke] {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.brand-icon[data-size="sm"] [data-stroke] {
+  stroke-width: 1.25;
+}
+.brand-icon[data-size="sm"] [data-detail] {
+  display: none;
+}
+.brand-icon [data-accent] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.brand-icon [data-accent="fill"] {
+  fill: var(--icon-accent, var(--color-gold-500));
+  stroke: none;
+}
+.brand-icon [data-accent="line"] {
+  fill: none;
+  stroke: var(--icon-accent, var(--color-gold-500));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.25;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Inside a hovered or focused card the lines redraw and the accent pops in. At rest they are always whole. */
+@keyframes icon-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes icon-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.group:is(:hover, :focus-visible) .brand-icon[data-animate="true"] [data-stroke] {
+  stroke-dasharray: 1;
+  animation: icon-draw 0.9s var(--ease-portal) both;
+}
+.group:is(:hover, :focus-visible) .brand-icon[data-animate="true"] [data-accent] {
+  animation: icon-pop 0.5s var(--ease-portal) 0.45s both;
+}
+
 /* A dot travelling down a hairline, inviting a scroll. */
 @keyframes scroll-cue {
   from {
