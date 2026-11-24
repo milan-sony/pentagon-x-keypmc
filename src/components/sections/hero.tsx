@@ -1,6 +1,14 @@
 "use client";
 
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { ArchOutline } from "@/components/brand/arch";
 import { Odometer } from "@/components/motion/odometer";
@@ -9,7 +17,7 @@ import { SectionLabel } from "@/components/ui/heading";
 import { PillButton } from "@/components/ui/pill-button";
 import { home } from "@/content/home";
 import { useIntroReady } from "@/lib/intro";
-import { NextSlideThumb, SLIDE_SECONDS, SlideStack, type Slide } from "./hero-slider";
+import { NextSlideThumb, SectorLine, SLIDE_SECONDS, SlideStack, type Slide } from "./hero-slider";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -45,13 +53,20 @@ export function Hero() {
   const ready = useIntroReady();
   const reduceMotion = useReducedMotion() ?? false;
 
-  const [index, setIndex] = useState(0);
-  const go = (i: number) => setIndex((i + slides.length) % slides.length);
+  // The previous slide stays beneath the incoming one while it opens; null on first load.
+  const [{ index, previous }, setShow] = useState<{ index: number; previous: number | null }>({
+    index: 0,
+    previous: null,
+  });
+  const go = (i: number) => setShow((s) => ({ index: (i + slides.length) % slides.length, previous: s.index }));
 
   // Each slide stays up for SLIDE_SECONDS; choosing "Next" restarts the wait. Still for reduced motion.
   useEffect(() => {
     if (!ready || reduceMotion) return;
-    const timer = window.setTimeout(() => setIndex((i) => (i + 1) % slides.length), SLIDE_SECONDS * 1000);
+    const timer = window.setTimeout(
+      () => setShow((s) => ({ index: (s.index + 1) % slides.length, previous: s.index })),
+      SLIDE_SECONDS * 1000,
+    );
     return () => window.clearTimeout(timer);
   }, [index, ready, reduceMotion, slides.length]);
 
@@ -66,11 +81,20 @@ export function Hero() {
   const archY = useTransform(smoothY, (v) => v * 24);
   const cardX = useTransform(smoothX, (v) => v * 12);
 
+  // A warm light that follows the mouse across the photo; shown once a mouse moves (never on touch).
+  const [glow, setGlow] = useState(false);
+  const glowX = useMotionValue(0);
+  const glowY = useMotionValue(0);
+  const glowBackground = useMotionTemplate`radial-gradient(34rem circle at ${glowX}px ${glowY}px, rgb(217 188 122 / 0.28), transparent 65%)`;
+
   const onPointerMove = (event: PointerEvent<HTMLElement>) => {
     if (reduceMotion || event.pointerType !== "mouse") return;
     const bounds = event.currentTarget.getBoundingClientRect();
     pointerX.set((event.clientX - bounds.left) / bounds.width - 0.5);
     pointerY.set((event.clientY - bounds.top) / bounds.height - 0.5);
+    glowX.set(event.clientX - bounds.left);
+    glowY.set(event.clientY - bounds.top);
+    if (!glow) setGlow(true);
   };
 
   // Leaving: the photo keeps zooming while the copy lifts and fades.
@@ -99,20 +123,28 @@ export function Hero() {
           style={reduceMotion ? undefined : { scale: exitScale }}
         >
           <motion.div className="absolute -inset-8" style={{ x: imageX, y: imageY }}>
-            <SlideStack slides={slides} index={index} ready={ready} />
+            <SlideStack slides={slides} index={index} previous={previous} ready={ready} />
           </motion.div>
         </motion.div>
 
         {/* Backdrop: a darkening wash for legibility, a warm vignette and film grain. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(46_26_15/0.6)_0%,rgb(46_26_15/0.2)_38%,rgb(46_26_15/0.9)_100%)]"
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(46_26_15/0.7)_0%,rgb(46_26_15/0.5)_40%,rgb(46_26_15/0.92)_100%)]"
         />
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgb(46_26_15/0.65)_100%)]"
         />
         <div aria-hidden="true" className="grain absolute inset-0 -z-10" />
+        {glow && !reduceMotion ? (
+          <motion.div
+            aria-hidden="true"
+            data-hero-glow
+            className="pointer-events-none absolute inset-0 -z-10 mix-blend-soft-light"
+            style={{ background: glowBackground }}
+          />
+        ) : null}
 
         <motion.div
           aria-hidden="true"
@@ -127,9 +159,15 @@ export function Hero() {
           style={reduceMotion ? undefined : { y: exitY, opacity: exitOpacity }}
         >
           <Rise ready={ready} delay={0}>
-            <SectionLabel tone="dark" className="bg-brown-950/30 backdrop-blur-sm">
-              {hero.label}
-            </SectionLabel>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <SectionLabel tone="dark" className="bg-brown-950/30 backdrop-blur-sm">
+                {hero.label}
+              </SectionLabel>
+              <span aria-hidden="true" className="hidden h-px w-10 bg-gold-400/70 sm:block" />
+              <p className="font-display text-xl text-cream sm:text-[1.65rem]">
+                <SectorLine slides={slides} index={index} previous={previous} />
+              </p>
+            </div>
           </Rise>
 
           <SplitText

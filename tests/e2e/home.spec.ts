@@ -52,7 +52,9 @@ test.describe("homepage", () => {
     } else {
       await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Services" }).click();
     }
-    await expect(page.getByRole("heading", { name: "Integrated capabilities across the project life cycle." })).toBeInViewport();
+    await expect(
+      page.getByRole("heading", { name: "Integrated capabilities across the project life cycle." }),
+    ).toBeInViewport();
   });
 
   test("the enquiry form explains missing fields", async ({ page }) => {

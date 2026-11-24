@@ -73,4 +73,20 @@ describe("Hero slideshow", () => {
     wait(2100);
     expect(slide(3, third.caption)).not.toHaveAttribute("aria-hidden");
   });
+
+  it("names the current slide's sector above the headline", () => {
+    const { container } = render(<Hero />);
+    const current = () => container.querySelector("[data-sector][data-active='true']");
+    expect(current()).toHaveTextContent(first.caption);
+    wait(7100);
+    expect(current()).toHaveTextContent(second.caption);
+  });
+
+  it("opens the incoming slide from the arch while the previous one stays beneath", () => {
+    render(<Hero />);
+    wait(7100);
+    const carousel = screen.getByRole("group", { name: "Featured sectors" });
+    expect(slide(2, second.caption)).toHaveAttribute("data-state", "entering");
+    expect(carousel.querySelector(`[aria-label="1 of 3: ${first.caption}"]`)).toHaveAttribute("data-state", "previous");
+  });
 });

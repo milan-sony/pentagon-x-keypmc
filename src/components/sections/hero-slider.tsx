@@ -11,32 +11,53 @@ const ease = [0.22, 1, 0.36, 1] as const;
 /** How long each slide stays up before the next one opens. */
 export const SLIDE_SECONDS = 7;
 
+/** The brand arch the incoming slide opens from: narrow, bottom centre, round-topped. */
+const ARCH_CLOSED = "inset(42% 36% 0% 36% round 999px 999px 0px 0px)";
+const ARCH_OPEN = "inset(0% 0% 0% 0% round 0px 0px 0px 0px)";
+
+type SlideState = "active" | "entering" | "previous" | "hidden";
+
 /**
- * The stacked, cross-fading slide images. Only the active slide is exposed to
- * assistive technology; the rest are hidden until chosen.
+ * The stacked slide images. A new slide opens out of the logo's arch over the
+ * one before it, which stays beneath until it is covered; the rest are hidden.
+ * Only the current slide is exposed to assistive technology.
  */
-export function SlideStack({ slides, index, ready }: { slides: Slide[]; index: number; ready: boolean }) {
+export function SlideStack({
+  slides,
+  index,
+  previous,
+  ready,
+}: {
+  slides: Slide[];
+  index: number;
+  /** The slide shown before this one, or null on first load (no reveal). */
+  previous: number | null;
+  ready: boolean;
+}) {
   return (
     <>
       {slides.map((slide, i) => {
-        const active = i === index;
+        const state: SlideState =
+          i === index ? (previous === null ? "active" : "entering") : i === previous ? "previous" : "hidden";
+        const current = i === index;
         return (
-          <div
+          <motion.div
             key={slide.image.src}
             role="group"
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${slides.length}: ${slide.caption}`}
-            aria-hidden={active ? undefined : true}
-            className={cn(
-              "absolute inset-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-              active ? "opacity-100" : "opacity-0",
-            )}
+            aria-hidden={current ? undefined : true}
+            data-state={state}
+            className={cn("absolute inset-0", current ? "z-20" : state === "previous" ? "z-10" : "z-0 opacity-0")}
+            initial={false}
+            animate={state === "entering" ? { clipPath: [ARCH_CLOSED, ARCH_OPEN] } : { clipPath: ARCH_OPEN }}
+            transition={state === "entering" ? { duration: 1.6, ease: [0.76, 0, 0.24, 1] } : { duration: 0 }}
           >
             {/* Ken Burns: each slide settles from a slow zoom while it is on screen. */}
             <motion.div
               className="absolute inset-0"
               initial={{ scale: 1.14 }}
-              animate={active && ready ? { scale: [1.14, 1] } : undefined}
+              animate={current && ready ? { scale: [1.14, 1] } : undefined}
               transition={{ duration: SLIDE_SECONDS + 2, ease: "easeOut" }}
             >
               <Image
@@ -49,10 +70,38 @@ export function SlideStack({ slides, index, ready }: { slides: Slide[]; index: n
                 className="object-cover"
               />
             </motion.div>
-          </div>
+          </motion.div>
         );
       })}
     </>
+  );
+}
+
+/**
+ * The current slide's sector, above the headline. Each caption slides up into
+ * place as its slide opens; the others wait above or below, out of sight.
+ */
+export function SectorLine({ slides, index, previous }: { slides: Slide[]; index: number; previous: number | null }) {
+  return (
+    <span className="relative inline-grid overflow-hidden">
+      {slides.map((slide, i) => {
+        const active = i === index;
+        return (
+          <motion.span
+            key={slide.caption}
+            data-sector
+            data-active={active}
+            aria-hidden={active ? undefined : true}
+            className="col-start-1 row-start-1 whitespace-nowrap"
+            initial={false}
+            animate={active ? { y: "0%", opacity: 1 } : { y: i === previous ? "-110%" : "110%", opacity: 0 }}
+            transition={{ duration: 0.9, ease, delay: active ? 0.35 : 0 }}
+          >
+            {slide.caption}
+          </motion.span>
+        );
+      })}
+    </span>
   );
 }
 
