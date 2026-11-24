@@ -1,4 +1,4 @@
-import { CountUp } from "@/components/motion/count-up";
+import { Odometer } from "@/components/motion/odometer";
 import { home } from "@/content/home";
 
 /** Antra's four-column counter row. */
@@ -18,7 +18,7 @@ export function Stats() {
             <div key={item.id} className="flex flex-col">
               <dt className="order-2 mt-5 text-lg font-medium text-brown-950">{item.label}</dt>
               <dd className="order-1 font-brand text-7xl leading-none text-brown-950 sm:text-[5.5rem]">
-                <CountUp value={item.value} />
+                <Odometer value={item.value} />
               </dd>
               <dd className="order-3 mt-1.5 max-w-60 text-[0.95rem] leading-relaxed text-brown-600">{item.detail}</dd>
             </div>

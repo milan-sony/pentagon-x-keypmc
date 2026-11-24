@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { SplitText } from "@/components/motion/split-heading";
 import type { Heading } from "@/content/home";
 import { cn } from "@/lib/utils";
 
@@ -21,14 +22,15 @@ export function SectionLabel({ children, tone = "light", className }: { children
 }
 
 /**
- * Headline in two tones. The accent uses gold-700 on light backgrounds
- * (gold-500 fails contrast there) and gold-400 on dark.
+ * Headline in two tones, revealed word by word as it scrolls into view. The
+ * accent uses gold-700 on light backgrounds (gold-500 fails contrast there)
+ * and gold-400 on dark.
  */
 export function TwoToneHeading({
   heading,
   id,
   tone = "light",
-  as: Tag = "h2",
+  as: tag = "h2",
   className,
 }: {
   heading: Heading;
@@ -38,17 +40,16 @@ export function TwoToneHeading({
   className?: string;
 }) {
   return (
-    <Tag
+    <SplitText
+      as={tag}
       id={id}
+      parts={[{ text: heading.start }, { text: heading.accent, className: tone === "dark" ? "text-gold-400" : "text-gold-700" }]}
       className={cn(
         "text-[2.6rem] leading-[1.02] font-medium tracking-[-0.015em] sm:text-6xl lg:text-[4.2rem]",
         tone === "dark" ? "text-cream" : "text-brown-950",
         className,
       )}
-    >
-      {heading.start}{" "}
-      <span className={tone === "dark" ? "text-gold-400" : "text-gold-700"}>{heading.accent}</span>
-    </Tag>
+    />
   );
 }
 

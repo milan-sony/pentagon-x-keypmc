@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Inter } from "next/font/google";
 import { Preloader } from "@/components/layout/preloader";
+import { Cursor } from "@/components/motion/cursor";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { home } from "@/content/home";
 import { introHeadScript } from "@/lib/intro-script";
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SmoothScroll>
           <Preloader />
           {children}
+          <Cursor />
         </SmoothScroll>
       </body>
     </html>
