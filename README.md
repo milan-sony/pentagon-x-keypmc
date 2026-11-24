@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Key International (KeyPMC) website
 
-## Getting Started
+Corporate website for Key International Engineering Projects Management Consultancy L.L.C S.P.C, an Abu Dhabi project management consultancy and member of United National Holding.
 
-First, run the development server:
+This phase delivers the **English homepage**. Its layout follows the Qleviq "IT Consult" template, restyled in the brand's brown and gold.
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack) with TypeScript
+- Tailwind CSS v4 and shadcn/ui (Radix base, RTL-ready for the Arabic version)
+- Motion for animation, Lenis for smooth scrolling, lucide-react for icons
+- Vitest with Testing Library (unit tests) and Playwright (end-to-end tests)
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To set the domain used in social preview links, copy `.env.example` to `.env.local` and change the value there.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the development server |
+| `npm run build` / `npm start` | Production build and server |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript without emitting |
+| `npm test` | Unit and component tests (Vitest) |
+| `npm run test:e2e` | Playwright at 375, 768, 1024 and 1440 px (run `npm run build` first) |
 
-## Learn More
+The first time you run Playwright, install its browser with `npx playwright install chromium`.
 
-To learn more about Next.js, take a look at the following resources:
+## Where things live
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/content/home.ts      All homepage copy, stats, services and projects. Edit text here.
+src/app/                 Layout, fonts, metadata, favicon and Open Graph image
+src/components/layout/   Top bar, header (with mobile menu) and footer
+src/components/sections/ One file per homepage section
+src/components/motion/   Reveal and CountUp animation helpers (respect reduced motion)
+public/brand/            Logos from the official logo pack (viewBox trimmed to the artwork)
+public/images/           Photography; see CREDITS.md
+tests/unit, tests/e2e    Vitest and Playwright tests
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Brand
 
-## Deploy on Vercel
+| Colour | Hex | Use |
+|---|---|---|
+| Dark brown | `#2E1A0F` | Hero panel, dark sections, footer |
+| Brown | `#5C3A21` | Text accents |
+| Gold | `#B8913F` | Buttons, rules, icons (not small text on light backgrounds, which fails contrast) |
+| Light gold | `#C9A04C` | Gold on dark backgrounds |
+| Cream | `#F4ECDD` | Section panels |
+| Ivory | `#FBF8F2` | Page background |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The fonts are Cormorant Garamond for headings, Inter for body text and Cinzel (the logo's typeface) for numerals. All three are self-hosted through `next/font`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Before go-live
+
+- **Enquiry form.** It validates input but does not send anything yet. To connect it, add a delivery target, such as an API route with an email service, in `src/components/sections/enquiry-form.tsx` (marked `TODO(go-live)`).
+- **Phone and email.** These are `null` in `src/content/home.ts`. Once you add them, they appear automatically in the contact section.
+- **Portfolio counts.** The figures are as at October 2026. Confirm them with KeyPMC.
+- **Photography.** The current photos are Unsplash placeholders. Replace them with KeyPMC's own project photos, and keep client names and project values out of the site.
