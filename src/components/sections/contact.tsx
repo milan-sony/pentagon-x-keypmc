@@ -25,7 +25,7 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="py-24 lg:py-32">
+    <section id="contact" aria-labelledby="contact-title" className="py-20 lg:py-24">
       <div className="container-site">
         <Reveal className="mx-auto max-w-3xl text-center">
           <SectionLabel align="center">{contact.label}</SectionLabel>
@@ -33,7 +33,7 @@ export function Contact() {
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-brown-600">{contact.lead}</p>
         </Reveal>
 
-        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-14">
+        <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-4">
             <RevealGroup as="dl" className="space-y-7">
               {details.map(({ icon: DetailIcon, label, lines, href }) => (

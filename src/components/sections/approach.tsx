@@ -17,7 +17,7 @@ export function Approach() {
     <section
       id="approach"
       aria-labelledby="approach-title"
-      className="relative isolate overflow-hidden bg-cream py-24 lg:py-32"
+      className="relative isolate overflow-hidden bg-cream py-20 lg:py-24"
     >
       {/* Faint drafting grid, a nod to the drawings behind every project. It drifts slowly with scroll. */}
       <Parallax offset={70} className="absolute -inset-y-24 inset-x-0 -z-10">
@@ -39,7 +39,7 @@ export function Approach() {
         </Reveal>
 
         {/* The life cycle is a true sequence, so its stages are numbered. */}
-        <RevealGroup as="ol" className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3 lg:gap-6">
+        <RevealGroup as="ol" className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
           {approach.stages.map((stage, i) => {
             const image = images[stage.image];
             const number = String(i + 1).padStart(2, "0");
@@ -99,7 +99,9 @@ export function Approach() {
                 className="group flex flex-col bg-ivory p-5 transition-colors duration-500 hover:bg-white sm:p-6"
               >
                 <BrandIcon name={tool.icon} animate className="size-10 text-brown-700" />
-                <span className="mt-6 text-lg leading-snug font-medium text-brown-950">{tool.title}</span>
+                <span className="mt-5 text-base leading-snug font-medium text-brown-950 sm:mt-6 sm:text-lg">
+                  {tool.title}
+                </span>
                 <span className="mt-2 text-sm leading-relaxed text-brown-600">{tool.description}</span>
               </RevealItem>
             ))}

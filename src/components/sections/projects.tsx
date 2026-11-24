@@ -14,7 +14,7 @@ const offsets = ["", "lg:mt-16", ""];
 export function Projects() {
   const { portfolio, images, sectors } = home;
   return (
-    <section id="projects" aria-labelledby="projects-title" className="relative isolate overflow-hidden py-24 lg:py-32">
+    <section id="projects" aria-labelledby="projects-title" className="relative isolate overflow-hidden py-20 lg:py-24">
       <Parallax
         axis="x"
         offset={140}
@@ -43,7 +43,7 @@ export function Projects() {
           />
         </Reveal>
 
-        <RevealGroup as="ul" className="mt-14 grid gap-10 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3 lg:gap-6">
+        <RevealGroup as="ul" className="mt-10 grid gap-10 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
           {portfolio.inDelivery.map((project, i) => {
             const image = images[project.image];
             return (
@@ -94,7 +94,7 @@ export function Projects() {
           })}
         </RevealGroup>
 
-        <Reveal className="mt-16 lg:mt-24">
+        <Reveal className="mt-12 lg:mt-16">
           <div className="grid gap-8 rounded-3xl border border-brown-950/10 bg-white/70 p-7 backdrop-blur-sm sm:p-10 lg:grid-cols-[auto_1fr_1.1fr] lg:items-center lg:gap-12">
             <p className="font-brand text-7xl leading-none text-brown-950 sm:text-8xl">
               <Odometer value={portfolio.pipeline.count} />

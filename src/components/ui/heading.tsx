@@ -72,7 +72,10 @@ export function TwoToneHeading({
     <SplitText
       as={tag}
       id={id}
-      parts={[{ text: heading.start }, { text: heading.accent, className: tone === "dark" ? "text-gold-400" : "text-gold-700" }]}
+      parts={[
+        { text: heading.start },
+        { text: heading.accent, className: tone === "dark" ? "text-gold-400" : "text-gold-700" },
+      ]}
       className={cn(
         "text-[2.6rem] leading-[1.02] font-medium tracking-[-0.015em] sm:text-6xl lg:text-[4.2rem]",
         tone === "dark" ? "text-cream" : "text-brown-950",
@@ -113,7 +116,12 @@ export function SplitHeader({
       <div className="lg:col-span-8">
         <TwoToneHeading id={id} heading={heading} tone={tone} />
         {lead ? (
-          <p className={cn("mt-6 max-w-2xl text-lg leading-relaxed", tone === "dark" ? "text-cream/70" : "text-brown-600")}>
+          <p
+            className={cn(
+              "mt-6 max-w-2xl text-lg leading-relaxed",
+              tone === "dark" ? "text-cream/70" : "text-brown-600",
+            )}
+          >
             {lead}
           </p>
         ) : null}

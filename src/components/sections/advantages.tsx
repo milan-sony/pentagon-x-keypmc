@@ -28,13 +28,13 @@ export function Advantages() {
   };
 
   return (
-    <section id="why" aria-labelledby="why-title" className="bg-white py-24 lg:py-32">
+    <section id="why" aria-labelledby="why-title" className="bg-white py-20 lg:py-24">
       <div className="container-site">
         <Reveal>
           <SplitHeader id="why-title" label={advantages.label} heading={advantages.title} />
         </Reveal>
 
-        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-14">
+        <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-12 lg:gap-14">
           <div className="hidden lg:col-span-5 lg:block">
             <div className="sticky top-28 aspect-[4/5] overflow-hidden rounded-3xl bg-sand">
               <AnimatePresence initial={false} mode="popLayout">

@@ -143,7 +143,6 @@ export function Hero() {
           />
         ) : null}
 
-
         <motion.div
           className="container-site flex flex-1 flex-col justify-end pt-36 pb-14 sm:pb-16 lg:pb-20"
           style={reduceMotion ? undefined : { y: exitY, opacity: exitOpacity }}

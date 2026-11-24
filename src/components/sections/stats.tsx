@@ -5,7 +5,7 @@ import { home } from "@/content/home";
 export function Stats() {
   const { stats } = home;
   return (
-    <section aria-labelledby="stats-title" className="bg-white pb-24 lg:pb-32">
+    <section aria-labelledby="stats-title" className="bg-white pb-20 lg:pb-24">
       <div className="container-site">
         <div className="flex flex-wrap items-baseline justify-between gap-2 border-t border-brown-950/10 pt-8">
           <h2 id="stats-title" className="font-sans text-sm font-medium text-brown-700">

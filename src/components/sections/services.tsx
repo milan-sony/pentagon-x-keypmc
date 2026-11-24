@@ -22,13 +22,13 @@ export function Services() {
   const specialistImage = images[services.specialist.image];
 
   return (
-    <section id="services" aria-labelledby="services-title" className="bg-white py-24 lg:py-32">
+    <section id="services" aria-labelledby="services-title" className="bg-white pt-20 pb-12 lg:pt-24 lg:pb-16">
       <div className="container-site">
         <Reveal>
           <SplitHeader id="services-title" label={services.label} heading={services.title} lead={services.lead} />
         </Reveal>
 
-        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-14">
+        <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-12 lg:gap-14">
           <div className="hidden lg:col-span-5 lg:block">
             <div className="sticky top-28 aspect-[4/5] overflow-hidden rounded-3xl bg-sand">
               <AnimatePresence initial={false} mode="popLayout">

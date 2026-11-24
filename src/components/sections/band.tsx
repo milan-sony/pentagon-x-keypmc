@@ -15,7 +15,7 @@ export function Band() {
   return (
     <section
       aria-labelledby="band-title"
-      className="relative isolate overflow-hidden bg-brown-950 py-24 text-cream lg:py-32"
+      className="relative isolate overflow-hidden bg-brown-950 py-20 text-cream lg:py-24"
     >
       {/* The watermark drifts sideways as the band scrolls past. */}
       <Parallax

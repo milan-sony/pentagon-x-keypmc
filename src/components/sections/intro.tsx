@@ -7,7 +7,7 @@ import { DivisionCard } from "./division-card";
 export function Intro() {
   const { intro, images } = home;
   return (
-    <section id="about" aria-labelledby="about-title" className="py-24 lg:py-32">
+    <section id="about" aria-labelledby="about-title" className="py-20 lg:py-24">
       <div className="container-site">
         <Reveal>
           <SplitHeader id="about-title" label={intro.label} heading={intro.title} lead={intro.body} />
@@ -16,7 +16,7 @@ export function Intro() {
         <RevealGroup
           as="ul"
           aria-label="Our divisions"
-          className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4"
+          className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4"
         >
           {intro.divisions.map((division, i) => (
             <RevealItem as="li" key={division.title}>
